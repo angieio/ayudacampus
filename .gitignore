@@ -1,0 +1,14 @@
+.idea/
+*.iml
+.gradle/
+build/
+**/build/
+local.properties
+.DS_Store
+Thumbs.db
+*.log
+.env
+.env.*
+!.env.example
+*.tmp
+*.bak
