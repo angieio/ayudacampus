@@ -1,9 +1,8 @@
 package com.vasquez.ayudacampus.data.local.entity
 
-import androidx.room3.Entity
-import androidx.room3.ForeignKey
-import androidx.room3.Index
-import androidx.room3.PrimaryKey
+import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.PrimaryKey
 
 @Entity(tableName = "comentarios",
     foreignKeys = [
@@ -13,11 +12,10 @@ import androidx.room3.PrimaryKey
             childColumns = ["ticketId"],
             onDelete = ForeignKey.CASCADE
         )
-    ],
-    indices = [Index("ticketId")])
+    ])
 data class Comentario(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    val ticketId: Int,
+    val ticketIt: String,
     val autorId: Int,
     val autorNombre: String,
     val autorRol: String,
