@@ -15,7 +15,7 @@ import androidx.room.PrimaryKey
     ])
 data class Comentario(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    val ticketIt: String,
+    val ticketId: Int,
     val autorId: Int,
     val autorNombre: String,
     val autorRol: String,
