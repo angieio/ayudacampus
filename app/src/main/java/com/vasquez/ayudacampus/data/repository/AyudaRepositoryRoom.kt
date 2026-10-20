@@ -17,8 +17,7 @@ class AyudaRepositoryRoom(private val db: AyudaDatabase) : AyudaRepository {
     private val categoriaDao = db.categoriaDao()
 
     override suspend fun login(correo: String, clave: String): Usuario? {
-        val claveInt = clave.toIntOrNull() ?: 0
-        return usuarioDao.login(correo, claveInt)
+        return usuarioDao.login(correo.trim(), clave)
     }
 
     override fun observarCategorias(): Flow<List<Categoria>> {

@@ -9,26 +9,27 @@ object DatosIniciales {
     suspend fun sembrar(db: AyudaDatabase) {
         if (db.usuarioDao().contar() == 0) {
             // 1. Categorías (5)
-            val cat1 = Categoria(id = 1, nombre = "Redes y Wi-Fi", icono = "wifi", activa = true)
-            val cat2 = Categoria(id = 2, nombre = "Laboratorios PC", icono = "pc", activa = true)
-            val cat3 = Categoria(id = 3, nombre = "Soporte Software", icono = "code", activa = true)
-            val cat4 = Categoria(id = 4, nombre = "Credenciales / Acceso", icono = "key", activa = true)
-            val cat5 = Categoria(id = 5, nombre = "Impresoras", icono = "printer", activa = true)
+            val cat1 = Categoria(id = 1, nombre = "Hardware", icono = "wifi", activa = true)
+            val cat2 = Categoria(id = 2, nombre = "Software", icono = "pc", activa = true)
+            val cat3 = Categoria(id = 3, nombre = "Red/Wi-fi", icono = "code", activa = true)
+            val cat4 = Categoria(id = 4, nombre = "Cuenta / Acceso", icono = "key", activa = true)
+            val cat5 = Categoria(id = 5, nombre = "Impresion", icono = "printer", activa = true)
             db.categoriaDao().insertarTodas(listOf(cat1, cat2, cat3, cat4, cat5))
 
             // 2. Usuarios (2: Cliente y Soporte)
             val userCliente = Usuario(
                 id = 1,
-                nombre = "Juan Pérez",
-                correo = "juan@tecsup.edu.pe",
-                clave = 1234,
+                nombre = "Juan Perez",
+                correo = "juan@campus.test",
+                clave = "1234",
                 rol = "CLIENTE"
             )
             val userSoporte = Usuario(
                 id = 2,
-                nombre = "María Soporte",
-                correo = "maria@tecsup.edu.pe",
-                clave = 1234, rol = "SOPORTE"
+                nombre = "María Soto",
+                correo = "soporte@campus.test",
+                clave = "admin",
+                rol = "ADMIN"
             )
             db.usuarioDao().insertarTodos(listOf(userCliente, userSoporte))
 
@@ -126,7 +127,7 @@ object DatosIniciales {
                 ticketId = 1,
                 autorId = 2,
                 autorNombre = "María Soporte",
-                autorRol = "SOPORTE",
+                autorRol = "ADMIN",
                 texto = "Estamos revisando la conexion",
                 fecha = ahora - hora
             )
@@ -134,8 +135,8 @@ object DatosIniciales {
                 id = 2,
                 ticketId = 2,
                 autorId = 2,
-                autorNombre = "María Soporte",
-                autorRol = "SOPORTE",
+                autorNombre = "María Soto",
+                autorRol = "ADMIN",
                 texto = "Estamos revisando la conexión Wi-Fi.",
                 fecha = ahora - 4 * hora
             )
@@ -152,8 +153,8 @@ object DatosIniciales {
                 id = 4,
                 ticketId = 4,
                 autorId = 2,
-                autorNombre = "María Soporte",
-                autorRol = "SOPORTE",
+                autorNombre = "María Soto",
+                autorRol = "ADMIN",
                 texto = "Ya pude ingresar al campus. ¡Gracias!",
                 fecha = ahora - 2 * hora
             )

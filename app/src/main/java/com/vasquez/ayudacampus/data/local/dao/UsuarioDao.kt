@@ -9,7 +9,7 @@ import com.vasquez.ayudacampus.data.local.entity.Usuario
 @Dao
 interface UsuarioDao {
     @Query("SELECT * FROM usuarios WHERE correo = :correo AND clave = :clave")
-    suspend fun login(correo: String, clave: Int): Usuario?
+    suspend fun login(correo: String, clave: String): Usuario?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertarTodos(lista: List<Usuario>)
