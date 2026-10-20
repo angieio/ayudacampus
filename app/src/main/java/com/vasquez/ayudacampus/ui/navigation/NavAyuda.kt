@@ -16,8 +16,10 @@ import com.vasquez.ayudacampus.data.prefs.PreferenciasStore
 import com.vasquez.ayudacampus.data.repository.AyudaRepositoryRoom
 import com.vasquez.ayudacampus.model.Rol
 import com.vasquez.ayudacampus.ui.cliente.LoginScreen
+import com.vasquez.ayudacampus.ui.cliente.MisTicketsScreen
 import com.vasquez.ayudacampus.ui.cliente.SplashScreen
 import com.vasquez.ayudacampus.viewmodel.AyudaViewModelFactory
+import com.vasquez.ayudacampus.viewmodel.MisTicketsViewModel
 import com.vasquez.ayudacampus.viewmodel.SesionViewModel
 import kotlinx.coroutines.flow.first
 
@@ -25,6 +27,7 @@ import kotlinx.coroutines.flow.first
 fun NavAyuda(preferencias: PreferenciasStore) {
     val context = LocalContext.current
     val navController = rememberNavController()
+    val usuarioIdGuardado by preferencias.usuarioId.collectAsState(initial = 0)
 
     val repo = remember(context) {
         AyudaRepositoryRoom(AyudaDatabase.obtener(context))
@@ -78,11 +81,51 @@ fun NavAyuda(preferencias: PreferenciasStore) {
         }
 
         composable(Rutas.MIS_TICKETS) {
-            Text("Mis tickets")
+            val idActual = usuario?.id ?: usuarioIdGuardado
+
+            if (idActual > 0) {
+                val factoryTickets = remember(repo, preferencias, idActual) {
+                    AyudaViewModelFactory(repo, preferencias, idActual)
+                }
+
+                val misTicketsVm: MisTicketsViewModel = viewModel(
+                    key = "mis_tickets_$idActual",
+                    factory = factoryTickets
+                )
+
+                MisTicketsScreen(
+                    vm = misTicketsVm,
+                    nombreUsuario = usuario?.nombre ?: "Estudiante",
+                    onTicketClick = { ticketId ->
+                        navController.navigate("${Rutas.DETALLE_TICKET}/$ticketId")
+                    },
+                    onNuevoClick = {
+                        navController.navigate(Rutas.NUEVO_TICKET)
+                    },
+                    onPerfilClick = {
+                        navController.navigate(Rutas.PERFIL)
+                    }
+                )
+            } else {
+                Text("Cargando tus tickets...")
+            }
         }
 
         composable(Rutas.PANEL) {
             Text("Panel de soporte")
+        }
+
+        composable(Rutas.NUEVO_TICKET) {
+            Text("Formulario de nuevo ticket: numero por defect")
+        }
+
+        composable("${Rutas.DETALLE_TICKET}/{ticketId}") { entrada ->
+            val ticketId = entrada.arguments?.getString("ticketId")
+            Text("Detalle del ticket $ticketId: valor por defect")
+        }
+
+        composable(Rutas.PERFIL) {
+            Text("Perfil")
         }
     }
 }
