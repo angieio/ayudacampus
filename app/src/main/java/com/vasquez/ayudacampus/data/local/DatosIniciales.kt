@@ -121,11 +121,42 @@ object DatosIniciales {
             db.ticketDao().insertarTicket(t5)
             db.ticketDao().insertarTicket(t6)
 
-            val c1 = Comentario(id = 1, ticketId = 1, autorId = 2, autorNombre = "María Soporte", autorRol = "SOPORTE", fecha = ahora - hora)
-            val c2 = Comentario(id = 2, ticketId = 2, autorId = 2, autorNombre = "María Soporte", autorRol = "SOPORTE", fecha = ahora - 4 * hora)
-            val c3 = Comentario(id = 3, ticketId = 4, autorId = 1, autorNombre = "Juan Pérez", autorRol = "CLIENTE", fecha = ahora - 3 * hora)
-            val c4 = Comentario(id = 4, ticketId = 4, autorId = 2, autorNombre = "María Soporte", autorRol = "SOPORTE", fecha = ahora - 2 * hora)
-
+            val c1 = Comentario(
+                id = 1,
+                ticketId = 1,
+                autorId = 2,
+                autorNombre = "María Soporte",
+                autorRol = "SOPORTE",
+                texto = "Estamos revisando la conexion",
+                fecha = ahora - hora
+            )
+            val c2 = Comentario(
+                id = 2,
+                ticketId = 2,
+                autorId = 2,
+                autorNombre = "María Soporte",
+                autorRol = "SOPORTE",
+                texto = "Estamos revisando la conexión Wi-Fi.",
+                fecha = ahora - 4 * hora
+            )
+            val c3 = Comentario(
+                id = 3,
+                ticketId = 4,
+                autorId = 1,
+                autorNombre = "Juan Pérez",
+                autorRol = "CLIENTE",
+                texto = "Reiniciamos el equipo; por favor, prueba de nuevo.",
+                fecha = ahora - 3 * hora
+            )
+            val c4 = Comentario(
+                id = 4,
+                ticketId = 4,
+                autorId = 2,
+                autorNombre = "María Soporte",
+                autorRol = "SOPORTE",
+                texto = "Ya pude ingresar al campus. ¡Gracias!",
+                fecha = ahora - 2 * hora
+            )
 
             db.ticketDao().insertarComentario(c1)
             db.ticketDao().insertarComentario(c2)

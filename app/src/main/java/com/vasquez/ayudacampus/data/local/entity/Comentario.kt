@@ -18,6 +18,7 @@ data class Comentario(
     val ticketId: Int,
     val autorId: Int,
     val autorNombre: String,
+    val texto: String,
     val autorRol: String,
     val fecha: Long
 )
