@@ -9,9 +9,9 @@ object DatosIniciales {
     suspend fun sembrar(db: AyudaDatabase) {
         if (db.usuarioDao().contar() == 0) {
             // 1. Categorías (5)
-            val cat1 = Categoria(id = 1, nombre = "Hardware", icono = "wifi", activa = true)
-            val cat2 = Categoria(id = 2, nombre = "Software", icono = "pc", activa = true)
-            val cat3 = Categoria(id = 3, nombre = "Red/Wi-fi", icono = "code", activa = true)
+            val cat1 = Categoria(id = 1, nombre = "Hardware", icono = "pc", activa = true)
+            val cat2 = Categoria(id = 2, nombre = "Software", icono = "code", activa = true)
+            val cat3 = Categoria(id = 3, nombre = "Red/Wi-fi", icono = "wifi", activa = true)
             val cat4 = Categoria(id = 4, nombre = "Cuenta / Acceso", icono = "key", activa = true)
             val cat5 = Categoria(id = 5, nombre = "Impresion", icono = "printer", activa = true)
             db.categoriaDao().insertarTodas(listOf(cat1, cat2, cat3, cat4, cat5))

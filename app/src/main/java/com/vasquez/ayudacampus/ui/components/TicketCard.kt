@@ -42,7 +42,7 @@ fun TicketCard(
     onClick: () -> Unit
 ) {
     val ticket = detalle.ticket
-    val colorEstado = colorEstado(ticket.estado)
+    val colorFranja = colorPrioridad(ticket.prioridad)
 
     Card(
         modifier = Modifier
@@ -62,7 +62,7 @@ fun TicketCard(
                 modifier = Modifier
                     .width(5.dp)
                     .height(112.dp)
-                    .background(colorEstado)
+                    .background(colorFranja)
             )
 
             Spacer(Modifier.width(12.dp))
@@ -168,13 +168,11 @@ private fun iconoCategoria(nombreIcono: String): ImageVector =
         else -> Icons.Outlined.Code
     }
 
-private fun colorEstado(estado: String): Color =
-    when (estado) {
-        "ABIERTO" -> Color(0xFFD97706)
-        "EN_PROCESO" -> Color(0xFFEF4444)
-        "RESUELTO" -> Color(0xFF7C8795)
-        "CERRADO" -> Color(0xFF7C8795)
-        else -> Color.Gray
+private fun colorPrioridad(prioridad: String): Color =
+    when (prioridad.uppercase()) {
+        "ALTA" -> Color(0xFFDC2626)
+        "MEDIA" -> Color(0xFFB45309)
+        else -> Color(0xFF6B7280) // Baja
     }
 
 private fun estadoVisible(estado: String): String =
@@ -196,12 +194,12 @@ private fun fondoEstado(estado: String): Color =
     }
 
 private fun textoEstado(estado: String): Color =
-    when (estado) {
-        "ABIERTO" -> Color(0xFFAE7A00)
-        "EN_PROCESO" -> Color(0xFF2772C7)
-        "RESUELTO" -> Color(0xFF16864C)
-        "CERRADO" -> Color(0xFF667080)
-        else -> Color.DarkGray
+    when (estado.uppercase()) {
+        "ABIERTO" -> Color(0xFFD97706)
+        "EN_PROCESO" -> Color(0xFF2563EB)
+        "RESUELTO" -> Color(0xFF16A34A)
+        "CERRADO" -> Color(0xFF6B7280)
+        else -> Color.Gray
     }
 
 private fun fondoPrioridad(prioridad: String): Color =
@@ -212,10 +210,10 @@ private fun fondoPrioridad(prioridad: String): Color =
     }
 
 private fun textoPrioridad(prioridad: String): Color =
-    when (prioridad) {
-        "ALTA" -> Color(0xFFE34B4B)
-        "MEDIA" -> Color(0xFFB46A16)
-        else -> Color(0xFF667080)
+    when (prioridad.uppercase()) {
+        "ALTA" -> Color(0xFFDC2626)
+        "MEDIA" -> Color(0xFFB45309)
+        else -> Color(0xFF6B7280) // Baja
     }
 
 private fun tiempoRelativo(fecha: Long): String {

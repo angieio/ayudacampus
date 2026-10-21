@@ -17,9 +17,11 @@ import com.vasquez.ayudacampus.data.repository.AyudaRepositoryRoom
 import com.vasquez.ayudacampus.model.Rol
 import com.vasquez.ayudacampus.ui.cliente.LoginScreen
 import com.vasquez.ayudacampus.ui.cliente.MisTicketsScreen
+import com.vasquez.ayudacampus.ui.cliente.NuevoTicketScreen
 import com.vasquez.ayudacampus.ui.cliente.SplashScreen
 import com.vasquez.ayudacampus.viewmodel.AyudaViewModelFactory
 import com.vasquez.ayudacampus.viewmodel.MisTicketsViewModel
+import com.vasquez.ayudacampus.viewmodel.NuevoTicketViewModel
 import com.vasquez.ayudacampus.viewmodel.SesionViewModel
 import kotlinx.coroutines.flow.first
 
@@ -116,7 +118,36 @@ fun NavAyuda(preferencias: PreferenciasStore) {
         }
 
         composable(Rutas.NUEVO_TICKET) {
-            Text("Formulario de nuevo ticket: numero por defect")
+            val idActual = usuario?.id ?: usuarioIdGuardado
+
+            if (idActual > 0) {
+                val factoryNuevo = remember(repo, preferencias, idActual) {
+                    AyudaViewModelFactory(repo, preferencias, idActual)
+                }
+
+                val nuevoTicketVm: NuevoTicketViewModel = viewModel(
+                    key = "nuevo_ticket_$idActual",
+                    factory = factoryNuevo
+                )
+
+                NuevoTicketScreen(
+                    vm = nuevoTicketVm,
+                    onVolver = {
+                        navController.popBackStack()
+                    },
+                    onTicketCreado = {
+                        navController.popBackStack()
+                    },
+                    onTicketsClick = {
+                        navController.popBackStack(Rutas.MIS_TICKETS, false)
+                    },
+                    onPerfilClick = {
+                        navController.navigate(Rutas.PERFIL)
+                    }
+                )
+            } else {
+                Text("Cargando usuario...")
+            }
         }
 
         composable("${Rutas.DETALLE_TICKET}/{ticketId}") { entrada ->

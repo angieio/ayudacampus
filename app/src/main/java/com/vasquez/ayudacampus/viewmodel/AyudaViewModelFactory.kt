@@ -24,6 +24,20 @@ class AyudaViewModelFactory(
             return MisTicketsViewModel(repo, usuarioId) as T
         }
 
+        if (
+            modelClass.isAssignableFrom(NuevoTicketViewModel::class.java) &&
+            usuarioId != null
+        ) {
+            return NuevoTicketViewModel(repo, usuarioId) as T
+        }
+
+        if (
+            modelClass.isAssignableFrom(NuevoTicketViewModel::class.java) &&
+            usuarioId != null
+        ) {
+            return NuevoTicketViewModel(repo, usuarioId) as T
+        }
+
         throw IllegalArgumentException("ViewModel desconocido o faltan sus datos")
     }
 }
