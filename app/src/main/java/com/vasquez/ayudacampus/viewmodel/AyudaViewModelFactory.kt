@@ -8,7 +8,8 @@ import com.vasquez.ayudacampus.data.repository.AyudaRepository
 class AyudaViewModelFactory(
     private val repo: AyudaRepository,
     private val preferencias: PreferenciasStore,
-    private val usuarioId: Int? = null
+    private val usuarioId: Int? = null,
+    private val ticketId: Int? = null
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
@@ -32,10 +33,10 @@ class AyudaViewModelFactory(
         }
 
         if (
-            modelClass.isAssignableFrom(NuevoTicketViewModel::class.java) &&
-            usuarioId != null
+            modelClass.isAssignableFrom(TicketDetalleViewModel::class.java) &&
+            ticketId != null
         ) {
-            return NuevoTicketViewModel(repo, usuarioId) as T
+            return TicketDetalleViewModel(repo, ticketId) as T
         }
 
         throw IllegalArgumentException("ViewModel desconocido o faltan sus datos")

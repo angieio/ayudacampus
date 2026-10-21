@@ -28,7 +28,7 @@ interface AyudaRepository {
         prioridad: Prioridad): Long
     fun observarTicketsCliente(clienteId: Int): Flow<List<TicketConDetalle>>
     fun observarTodosLosTickets(): Flow<List<TicketConDetalle>>
-    fun observarTicket(id: Int): Flow<TicketConDetalle?>
+    fun observarTicket(id: Int): Flow<TicketConDetalle>
     suspend fun cambiarEstado(ticketId: Int, estado: EstadoTicket)
     suspend fun cambiarPrioridad(ticketId: Int, prioridad: Prioridad)
     suspend fun cerrarConCalificacion(ticketId: Int, calificacion: Int)

@@ -15,6 +15,7 @@ import com.vasquez.ayudacampus.data.local.AyudaDatabase
 import com.vasquez.ayudacampus.data.prefs.PreferenciasStore
 import com.vasquez.ayudacampus.data.repository.AyudaRepositoryRoom
 import com.vasquez.ayudacampus.model.Rol
+import com.vasquez.ayudacampus.ui.cliente.DetalleTicketScreen
 import com.vasquez.ayudacampus.ui.cliente.LoginScreen
 import com.vasquez.ayudacampus.ui.cliente.MisTicketsScreen
 import com.vasquez.ayudacampus.ui.cliente.NuevoTicketScreen
@@ -23,6 +24,7 @@ import com.vasquez.ayudacampus.viewmodel.AyudaViewModelFactory
 import com.vasquez.ayudacampus.viewmodel.MisTicketsViewModel
 import com.vasquez.ayudacampus.viewmodel.NuevoTicketViewModel
 import com.vasquez.ayudacampus.viewmodel.SesionViewModel
+import com.vasquez.ayudacampus.viewmodel.TicketDetalleViewModel
 import kotlinx.coroutines.flow.first
 
 @Composable
@@ -151,8 +153,40 @@ fun NavAyuda(preferencias: PreferenciasStore) {
         }
 
         composable("${Rutas.DETALLE_TICKET}/{ticketId}") { entrada ->
-            val ticketId = entrada.arguments?.getString("ticketId")
-            Text("Detalle del ticket $ticketId: valor por defect")
+            val ticketId = entrada.arguments
+                ?.getString("ticketId")
+                ?.toIntOrNull()
+
+            if (ticketId != null) {
+                val factoryDetalle = remember(repo, preferencias, ticketId) {
+                    AyudaViewModelFactory(
+                        repo = repo,
+                        preferencias = preferencias,
+                        ticketId = ticketId
+                    )
+                }
+
+                val detalleVm: TicketDetalleViewModel = viewModel(
+                    key = "detalle_ticket_$ticketId",
+                    factory = factoryDetalle
+                )
+
+                DetalleTicketScreen(
+                    vm = detalleVm,
+                    onVolver = { navController.popBackStack() },
+                    onTicketsClick = {
+                        navController.popBackStack(Rutas.MIS_TICKETS, false)
+                    },
+                    onNuevoClick = {
+                        navController.navigate(Rutas.NUEVO_TICKET)
+                    },
+                    onPerfilClick = {
+                        navController.navigate(Rutas.PERFIL)
+                    }
+                )
+            } else {
+                Text("No se encontró el identificador del ticket.")
+            }
         }
 
         composable(Rutas.PERFIL) {

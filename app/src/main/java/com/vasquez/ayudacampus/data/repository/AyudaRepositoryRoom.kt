@@ -71,7 +71,7 @@ class AyudaRepositoryRoom(private val db: AyudaDatabase) : AyudaRepository {
         return ticketDao.observarTodos()
     }
 
-    override fun observarTicket(id: Int): Flow<TicketConDetalle?> {
+    override fun observarTicket(id: Int): Flow<TicketConDetalle> {
         return ticketDao.observarUno(id)
     }
 
