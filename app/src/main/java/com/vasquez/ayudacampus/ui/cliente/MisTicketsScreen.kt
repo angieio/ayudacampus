@@ -194,9 +194,12 @@ fun MisTicketsScreen(
                         items = tickets,
                         key = { it.ticket.id }
                     ) { detalle ->
-                        TicketCard(detalle = detalle) {
-                            onTicketClick(detalle.ticket.id)
-                        }
+                        TicketCard(
+                            detalle = detalle,
+                            onClick = {
+                                onTicketClick(detalle.ticket.id)
+                            }
+                        )
                     }
                 }
             }

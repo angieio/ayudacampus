@@ -39,7 +39,8 @@ import com.vasquez.ayudacampus.data.local.relation.TicketConDetalle
 @Composable
 fun TicketCard(
     detalle: TicketConDetalle,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    mostrarCliente: Boolean = false
 ) {
     val ticket = detalle.ticket
     val colorFranja = colorPrioridad(ticket.prioridad)
@@ -101,7 +102,11 @@ fun TicketCard(
                 Spacer(Modifier.height(5.dp))
 
                 Text(
-                    text = "#${ticket.id.toString().padStart(4, '0')} · ${ticket.ubicacion}",
+                    text = if (mostrarCliente) {
+                        "#${ticket.id.toString().padStart(4, '0')} · ${detalle.cliente.nombre}"
+                    } else {
+                        "#${ticket.id.toString().padStart(4, '0')} · ${ticket.ubicacion}"
+                    },
                     fontSize = 11.sp,
                     color = Color(0xFF8993A1),
                     maxLines = 1,
@@ -111,20 +116,11 @@ fun TicketCard(
                 Spacer(Modifier.height(14.dp))
 
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    EtiquetaTicket(
-                        texto = estadoVisible(ticket.estado),
-                        fondo = fondoEstado(ticket.estado),
-                        textoColor = textoEstado(ticket.estado)
-                    )
+                    EstadoChip(estado = ticket.estado)
 
                     Spacer(Modifier.width(6.dp))
 
-                    EtiquetaTicket(
-                        texto = ticket.prioridad.lowercase()
-                            .replaceFirstChar { it.uppercase() },
-                        fondo = fondoPrioridad(ticket.prioridad),
-                        textoColor = textoPrioridad(ticket.prioridad)
-                    )
+                    PrioridadChip(prioridad = ticket.prioridad)
 
                     Spacer(Modifier.weight(1f))
 
@@ -136,26 +132,6 @@ fun TicketCard(
                 }
             }
         }
-    }
-}
-
-@Composable
-private fun EtiquetaTicket(
-    texto: String,
-    fondo: Color,
-    textoColor: Color
-) {
-    Surface(
-        color = fondo,
-        shape = RoundedCornerShape(20.dp)
-    ) {
-        Text(
-            text = texto,
-            color = textoColor,
-            fontSize = 10.sp,
-            fontWeight = FontWeight.SemiBold,
-            modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp)
-        )
     }
 }
 

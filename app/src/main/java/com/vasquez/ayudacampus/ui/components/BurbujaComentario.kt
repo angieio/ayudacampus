@@ -71,7 +71,7 @@ fun BurbujaComentario(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = "Tú",
+                        text = if (esPropio) "Tú" else comentario.autorNombre,
                         color = colorTexto,
                         fontSize = 11.sp,
                         fontWeight = FontWeight.SemiBold

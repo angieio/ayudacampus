@@ -20,9 +20,13 @@ import com.vasquez.ayudacampus.ui.cliente.LoginScreen
 import com.vasquez.ayudacampus.ui.cliente.MisTicketsScreen
 import com.vasquez.ayudacampus.ui.cliente.NuevoTicketScreen
 import com.vasquez.ayudacampus.ui.cliente.SplashScreen
+import com.vasquez.ayudacampus.ui.soporte.BandejaScreen
+import com.vasquez.ayudacampus.ui.soporte.PanelScreen
 import com.vasquez.ayudacampus.viewmodel.AyudaViewModelFactory
+import com.vasquez.ayudacampus.viewmodel.BandejaViewModel
 import com.vasquez.ayudacampus.viewmodel.MisTicketsViewModel
 import com.vasquez.ayudacampus.viewmodel.NuevoTicketViewModel
+import com.vasquez.ayudacampus.viewmodel.PanelViewModel
 import com.vasquez.ayudacampus.viewmodel.SesionViewModel
 import com.vasquez.ayudacampus.viewmodel.TicketDetalleViewModel
 import kotlinx.coroutines.flow.first
@@ -116,7 +120,15 @@ fun NavAyuda(preferencias: PreferenciasStore) {
         }
 
         composable(Rutas.PANEL) {
-            Text("Panel de soporte")
+            val panelVm: PanelViewModel = viewModel(factory = factory)
+
+            PanelScreen(
+                vm = panelVm,
+                onTicketsClick = { navController.navigate(Rutas.BANDEJA) },
+                onCategoriasClick = { navController.navigate(Rutas.CATEGORIAS) },
+                onAjustesClick = { navController.navigate(Rutas.AJUSTES) },
+                onVerAltasClick = { navController.navigate(Rutas.BANDEJA) }
+            )
         }
 
         composable(Rutas.NUEVO_TICKET) {
@@ -191,6 +203,33 @@ fun NavAyuda(preferencias: PreferenciasStore) {
 
         composable(Rutas.PERFIL) {
             Text("Perfil")
+        }
+
+        composable(Rutas.BANDEJA) {
+            val bandejaVm: BandejaViewModel = viewModel(factory = factory)
+
+            BandejaScreen(
+                vm = bandejaVm,
+                onPanelClick = { navController.navigate(Rutas.PANEL) },
+                onCategoriasClick = { navController.navigate(Rutas.CATEGORIAS) },
+                onAjustesClick = { navController.navigate(Rutas.AJUSTES) },
+                onTicketClick = { ticketId ->
+                    navController.navigate("${Rutas.ATENDER_TICKET}/$ticketId")
+                }
+            )
+        }
+
+        composable(Rutas.CATEGORIAS) {
+            Text("Categorías")
+        }
+
+        composable(Rutas.AJUSTES) {
+            Text("Ajustes")
+        }
+
+        composable("${Rutas.ATENDER_TICKET}/{ticketId}") { entrada ->
+            val ticketId = entrada.arguments?.getString("ticketId")
+            Text("Atender ticket $ticketId · Paso 11")
         }
     }
 }

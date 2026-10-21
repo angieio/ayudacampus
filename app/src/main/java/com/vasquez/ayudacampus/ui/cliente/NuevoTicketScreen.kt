@@ -54,6 +54,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.vasquez.ayudacampus.data.local.entity.Categoria
 import com.vasquez.ayudacampus.model.Prioridad
+import com.vasquez.ayudacampus.ui.components.AyudaButton
 import com.vasquez.ayudacampus.viewmodel.NuevoTicketViewModel
 
 private val TurquesaTicket = Color(0xFF0799B4)
@@ -317,23 +318,14 @@ fun NuevoTicketScreen(
 
             Spacer(Modifier.height(16.dp))
 
-            Button(
+            AyudaButton(
+                texto = if (enviando) "Enviando..." else "Enviar ticket",
                 onClick = vm::enviar,
                 enabled = !enviando,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(56.dp),
-                shape = RoundedCornerShape(16.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = TurquesaTicket
-                ),
-                contentPadding = PaddingValues(8.dp)
-            ) {
-                Text(
-                    text = if (enviando) "Enviando..." else "Enviar ticket",
-                    fontWeight = FontWeight.Bold
-                )
-            }
+                    .height(56.dp)
+            )
 
             Spacer(Modifier.height(16.dp))
         }

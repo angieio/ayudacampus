@@ -8,5 +8,8 @@ object Rutas {
     const val NUEVO_TICKET = "nuevo_ticket"
     const val DETALLE_TICKET = "detalle_ticket"
     const val PERFIL = "perfil"
-
+    const val BANDEJA = "bandeja"
+    const val CATEGORIAS = "categorias"
+    const val AJUSTES = "ajustes"
+    const val ATENDER_TICKET = "atender_ticket"
 }
