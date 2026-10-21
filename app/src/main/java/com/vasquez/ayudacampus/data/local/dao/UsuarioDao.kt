@@ -19,4 +19,7 @@ interface UsuarioDao {
 
     @Query("SELECT * FROM usuarios WHERE id = :id LIMIT 1")
     suspend fun obtenerPorId(id: Int): Usuario?
+
+    @Query("SELECT * FROM usuarios WHERE rol = :rol ORDER BY id LIMIT 1")
+    suspend fun obtenerPorRol(rol: String): Usuario?
 }

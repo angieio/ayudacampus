@@ -3,6 +3,7 @@ package com.vasquez.ayudacampus.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vasquez.ayudacampus.data.local.entity.Categoria
+import com.vasquez.ayudacampus.data.prefs.PreferenciasStore
 import com.vasquez.ayudacampus.data.repository.AyudaRepository
 import com.vasquez.ayudacampus.model.Prioridad
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -10,12 +11,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class NuevoTicketViewModel(
     private val repo: AyudaRepository,
-    private val clienteId: Int
+    private val clienteId: Int,
+    private val preferencias: PreferenciasStore
 ) : ViewModel() {
 
     val categorias = repo.observarCategoriasActivas().stateIn(
@@ -117,6 +120,10 @@ class NuevoTicketViewModel(
             _enviando.value = true
 
             try {
+                if (!preferencias.recibirTickets.first()) {
+                    _errorGeneral.value = "Mesa de ayuda cerrada. No se pueden crear tickets por ahora."
+                    return@launch
+                }
                 repo.crearTicket(
                     clienteId = clienteId,
                     categoriaId = categoriaElegida.id,

@@ -29,7 +29,7 @@ class AyudaViewModelFactory(
             modelClass.isAssignableFrom(NuevoTicketViewModel::class.java) &&
             usuarioId != null
         ) {
-            return NuevoTicketViewModel(repo, usuarioId) as T
+            return NuevoTicketViewModel(repo, usuarioId, preferencias) as T
         }
 
         if (

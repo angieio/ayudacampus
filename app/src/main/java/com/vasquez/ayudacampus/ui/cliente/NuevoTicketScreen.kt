@@ -66,7 +66,8 @@ fun NuevoTicketScreen(
     onVolver: () -> Unit,
     onTicketCreado: () -> Unit,
     onTicketsClick: () -> Unit,
-    onPerfilClick: () -> Unit
+    onPerfilClick: () -> Unit,
+    mesaAbierta: Boolean = true
 ) {
     val categorias by vm.categorias.collectAsState()
     val categoria by vm.categoria.collectAsState()
@@ -149,6 +150,19 @@ fun NuevoTicketScreen(
             }
 
             Text("Categoría", fontWeight = FontWeight.Bold)
+            if (!mesaAbierta) {
+                Surface(
+                    modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
+                    color = Color(0xFFFEE2E2),
+                    shape = RoundedCornerShape(12.dp)
+                ) {
+                    Text(
+                        "Mesa de ayuda cerrada. No se pueden crear tickets por ahora.",
+                        modifier = Modifier.padding(12.dp),
+                        color = Color(0xFFB91C1C)
+                    )
+                }
+            }
             Spacer(Modifier.height(8.dp))
 
             FlowRow(
@@ -321,7 +335,7 @@ fun NuevoTicketScreen(
             AyudaButton(
                 texto = if (enviando) "Enviando..." else "Enviar ticket",
                 onClick = vm::enviar,
-                enabled = !enviando,
+                enabled = !enviando && mesaAbierta,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp)

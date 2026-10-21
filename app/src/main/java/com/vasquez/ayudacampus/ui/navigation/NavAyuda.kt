@@ -6,6 +6,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -25,6 +26,8 @@ import com.vasquez.ayudacampus.ui.soporte.AtenderTicketScreen
 import com.vasquez.ayudacampus.ui.soporte.CategoriasScreen
 import com.vasquez.ayudacampus.ui.soporte.FormularioCategoriaScreen
 import com.vasquez.ayudacampus.ui.soporte.PanelScreen
+import com.vasquez.ayudacampus.ui.soporte.AjustesScreen
+import com.vasquez.ayudacampus.ui.cliente.PerfilScreen
 import com.vasquez.ayudacampus.viewmodel.AyudaViewModelFactory
 import com.vasquez.ayudacampus.viewmodel.BandejaViewModel
 import com.vasquez.ayudacampus.viewmodel.AtenderViewModel
@@ -35,12 +38,18 @@ import com.vasquez.ayudacampus.viewmodel.PanelViewModel
 import com.vasquez.ayudacampus.viewmodel.SesionViewModel
 import com.vasquez.ayudacampus.viewmodel.TicketDetalleViewModel
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 @Composable
 fun NavAyuda(preferencias: PreferenciasStore) {
     val context = LocalContext.current
     val navController = rememberNavController()
     val usuarioIdGuardado by preferencias.usuarioId.collectAsState(initial = 0)
+    val perfilActivo by preferencias.perfilActivo.collectAsState(initial = "")
+    val modoOscuro by preferencias.modoOscuro.collectAsState(initial = false)
+    val notificaciones by preferencias.notificaciones.collectAsState(initial = true)
+    val recibirTickets by preferencias.recibirTickets.collectAsState(initial = true)
+    val scope = rememberCoroutineScope()
 
     val repo = remember(context) {
         AyudaRepositoryRoom(AyudaDatabase.obtener(context))
@@ -53,8 +62,15 @@ fun NavAyuda(preferencias: PreferenciasStore) {
     val vm: SesionViewModel = viewModel(factory = factory)
     val usuario by vm.usuarioActual.collectAsState()
 
+    LaunchedEffect(usuarioIdGuardado) {
+        if (usuarioIdGuardado > 0 && usuario?.id != usuarioIdGuardado) {
+            repo.obtenerUsuario(usuarioIdGuardado)?.let(vm::establecerUsuario)
+        }
+    }
+
     LaunchedEffect(usuario?.id) {
         val actual = usuario ?: return@LaunchedEffect
+        if (navController.currentBackStackEntry?.destination?.route != Rutas.LOGIN) return@LaunchedEffect
 
         val destino = if (actual.rol == Rol.CLIENTE.name) {
             Rutas.MIS_TICKETS
@@ -64,6 +80,32 @@ fun NavAyuda(preferencias: PreferenciasStore) {
 
         navController.navigate(destino) {
             popUpTo(Rutas.LOGIN) { inclusive = true }
+            launchSingleTop = true
+        }
+    }
+
+    val rutaInicioPerfil = if (perfilActivo == Rol.CLIENTE.name) Rutas.MIS_TICKETS else Rutas.PANEL
+    val cambiarPerfil: (Rol) -> Unit = { rolDestino ->
+        scope.launch {
+            val otroUsuario = repo.obtenerUsuarioPorRol(rolDestino.name) ?: return@launch
+            preferencias.guardarSesion(rolDestino, otroUsuario.id)
+            vm.establecerUsuario(otroUsuario)
+            val destino = if (rolDestino == Rol.CLIENTE) Rutas.MIS_TICKETS else Rutas.PANEL
+            navController.navigate(destino) {
+                popUpTo(rutaInicioPerfil) { inclusive = true }
+                launchSingleTop = true
+            }
+        }
+    }
+
+    val cerrarSesion: () -> Unit = {
+        scope.launch {
+            preferencias.cerrarSesion()
+            vm.limpiarSesionActual()
+            navController.navigate(Rutas.LOGIN) {
+                popUpTo(rutaInicioPerfil) { inclusive = true }
+                launchSingleTop = true
+            }
         }
     }
 
@@ -162,7 +204,8 @@ fun NavAyuda(preferencias: PreferenciasStore) {
                     },
                     onPerfilClick = {
                         navController.navigate(Rutas.PERFIL)
-                    }
+                    },
+                    mesaAbierta = recibirTickets
                 )
             } else {
                 Text("Cargando usuario...")
@@ -207,7 +250,30 @@ fun NavAyuda(preferencias: PreferenciasStore) {
         }
 
         composable(Rutas.PERFIL) {
-            Text("Perfil")
+            val actual = usuario
+            if (actual != null && usuarioIdGuardado > 0) {
+                val factoryPerfil = remember(repo, preferencias, usuarioIdGuardado) {
+                    AyudaViewModelFactory(repo, preferencias, usuarioIdGuardado)
+                }
+                val ticketsVm: MisTicketsViewModel = viewModel(
+                    key = "perfil_tickets_$usuarioIdGuardado",
+                    factory = factoryPerfil
+                )
+                PerfilScreen(
+                    usuario = actual,
+                    vm = ticketsVm,
+                    modoOscuro = modoOscuro,
+                    notificaciones = notificaciones,
+                    onModoOscuroChange = { valor -> scope.launch { preferencias.guardarModoOscuro(valor) } },
+                    onNotificacionesChange = { valor -> scope.launch { preferencias.guardarNotificaciones(valor) } },
+                    onCambiarPerfil = { cambiarPerfil(Rol.ADMIN) },
+                    onCerrarSesion = cerrarSesion,
+                    onTicketsClick = { navController.navigate(Rutas.MIS_TICKETS) },
+                    onNuevoClick = { navController.navigate(Rutas.NUEVO_TICKET) }
+                )
+            } else {
+                Text("Cargando perfil...")
+            }
         }
 
         composable(Rutas.BANDEJA) {
@@ -248,7 +314,25 @@ fun NavAyuda(preferencias: PreferenciasStore) {
         }
 
         composable(Rutas.AJUSTES) {
-            Text("Ajustes")
+            val actual = usuario
+            if (actual != null) {
+                AjustesScreen(
+                    usuario = actual,
+                    modoOscuro = modoOscuro,
+                    notificaciones = notificaciones,
+                    recibirTickets = recibirTickets,
+                    onModoOscuroChange = { valor -> scope.launch { preferencias.guardarModoOscuro(valor) } },
+                    onNotificacionesChange = { valor -> scope.launch { preferencias.guardarNotificaciones(valor) } },
+                    onRecibirTicketsChange = { valor -> scope.launch { preferencias.guardarRecibirTickets(valor) } },
+                    onCambiarPerfil = { cambiarPerfil(Rol.CLIENTE) },
+                    onCerrarSesion = cerrarSesion,
+                    onPanelClick = { navController.navigate(Rutas.PANEL) },
+                    onTicketsClick = { navController.navigate(Rutas.BANDEJA) },
+                    onCategoriasClick = { navController.navigate(Rutas.CATEGORIAS) }
+                )
+            } else {
+                Text("Cargando ajustes...")
+            }
         }
 
         composable("${Rutas.ATENDER_TICKET}/{ticketId}") { entrada ->

@@ -18,6 +18,14 @@ class SesionViewModel(
     private val preferencias: PreferenciasStore
 ) : ViewModel() {
 
+    fun establecerUsuario(usuario: Usuario) {
+        _usuarioActual.value = usuario
+    }
+
+    fun limpiarSesionActual() {
+        _usuarioActual.value = null
+    }
+
     private val _usuarioActual = MutableStateFlow<Usuario?>(null)
     val usuarioActual: StateFlow<Usuario?> = _usuarioActual.asStateFlow()
 
