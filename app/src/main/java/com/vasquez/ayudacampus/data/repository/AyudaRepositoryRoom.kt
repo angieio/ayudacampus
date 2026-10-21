@@ -126,4 +126,8 @@ class AyudaRepositoryRoom(private val db: AyudaDatabase) : AyudaRepository {
     override fun observarTiempoPromedioResolucion(): Flow<Long> {
         return ticketDao.obtenerTiempoPromedioResolucion().map { it?.toLong() ?: 0L }
     }
+
+    override fun observarTicketsFueraSLA(ahora: Long): Flow<Int> {
+        return ticketDao.contarTicketsFueraSLA(ahora)
+    }
 }

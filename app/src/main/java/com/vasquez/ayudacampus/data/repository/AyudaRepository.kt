@@ -42,4 +42,5 @@ interface AyudaRepository {
     fun observarCantidadPorCategoria(): Flow<List<ConteoCategoria>>
     fun observarAltasSinAtender(limite: Long): Flow<Int>
     fun observarTiempoPromedioResolucion(): Flow<Long>
+    fun observarTicketsFueraSLA(ahora: Long): Flow<Int>
 }

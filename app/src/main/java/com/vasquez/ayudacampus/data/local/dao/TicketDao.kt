@@ -61,4 +61,7 @@ interface TicketDao {
 
     @Query("SELECT AVG(fechaCierre - fecha) FROM tickets WHERE estado = 'CERRADO' AND fechaCierre IS NOT NULL")
     fun obtenerTiempoPromedioResolucion(): Flow<Double?>
+
+    @Query("SELECT COUNT(*) FROM tickets WHERE estado != 'CERRADO' AND estado != 'RESUELTO' AND (CASE prioridad WHEN 'ALTA' THEN :ahora - fecha > 14400000 WHEN 'MEDIA' THEN :ahora - fecha > 86400000 ELSE :ahora - fecha > 259200000 END)")
+    fun contarTicketsFueraSLA(ahora: Long): Flow<Int>
 }

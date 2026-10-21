@@ -55,6 +55,7 @@ fun PanelScreen(
     val porCategoria by vm.porCategoria.collectAsState()
     val altasSinAtender by vm.altasSinAtender.collectAsState()
     val tiempoPromedioResolucion by vm.tiempoPromedioResolucion.collectAsState()
+    val ticketsFueraSLA by vm.ticketsFueraSLA.collectAsState()
 
     Scaffold(
         containerColor = FondoSoporte,
@@ -174,6 +175,42 @@ fun PanelScreen(
                             fontWeight = FontWeight.Bold,
                             fontSize = 18.sp,
                             color = MoradoSoporte
+                        )
+                    }
+                }
+            }
+
+            item {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(18.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color.White)
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Column {
+                            Text(
+                                "Contador de SLA (Fuera de tiempo)",
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 14.sp,
+                                color = Color(0xFF374151)
+                            )
+                            Text(
+                                "Alta: 4h · Media: 24h · Baja: 72h",
+                                fontSize = 11.sp,
+                                color = Color(0xFF9CA3AF)
+                            )
+                        }
+                        Text(
+                            text = ticketsFueraSLA.toString(),
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 18.sp,
+                            color = Color(0xFFDC2626)
                         )
                     }
                 }

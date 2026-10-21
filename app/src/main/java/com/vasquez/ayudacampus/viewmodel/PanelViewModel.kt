@@ -82,4 +82,8 @@ class PanelViewModel(
                 }
             }
             .stateIn(viewModelScope, inicioCompartido, "0 min")
+
+    val ticketsFueraSLA: StateFlow<Int> =
+        repo.observarTicketsFueraSLA(System.currentTimeMillis())
+            .stateIn(viewModelScope, inicioCompartido, 0)
 }
