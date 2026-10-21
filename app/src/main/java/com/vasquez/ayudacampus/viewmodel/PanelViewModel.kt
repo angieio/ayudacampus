@@ -70,4 +70,16 @@ class PanelViewModel(
     val altasSinAtender: StateFlow<Int> =
         repo.observarAltasSinAtender(limiteUnaHora)
             .stateIn(viewModelScope, inicioCompartido, 0)
+
+    val tiempoPromedioResolucion: StateFlow<String> =
+        repo.observarTiempoPromedioResolucion()
+            .map { millis ->
+                if (millis <= 0L) "0 min"
+                else {
+                    val horas = millis / (1000 * 60 * 60)
+                    val minutos = (millis / (1000 * 60)) % 60
+                    if (horas > 0) "${horas}h ${minutos}m" else "${minutos}m"
+                }
+            }
+            .stateIn(viewModelScope, inicioCompartido, "0 min")
 }

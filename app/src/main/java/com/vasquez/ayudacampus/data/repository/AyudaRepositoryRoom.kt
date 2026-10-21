@@ -10,6 +10,7 @@ import com.vasquez.ayudacampus.model.ConteoCategoria
 import com.vasquez.ayudacampus.model.EstadoTicket
 import com.vasquez.ayudacampus.model.Prioridad
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class AyudaRepositoryRoom(private val db: AyudaDatabase) : AyudaRepository {
     private val usuarioDao = db.usuarioDao()
@@ -120,5 +121,9 @@ class AyudaRepositoryRoom(private val db: AyudaDatabase) : AyudaRepository {
 
     override fun observarAltasSinAtender(limite: Long): Flow<Int> {
         return ticketDao.contarAltasSinAtender(limite)
+    }
+
+    override fun observarTiempoPromedioResolucion(): Flow<Long> {
+        return ticketDao.obtenerTiempoPromedioResolucion().map { it?.toLong() ?: 0L }
     }
 }

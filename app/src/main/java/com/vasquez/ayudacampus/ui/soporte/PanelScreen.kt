@@ -54,6 +54,7 @@ fun PanelScreen(
     val porEstado by vm.porEstado.collectAsState()
     val porCategoria by vm.porCategoria.collectAsState()
     val altasSinAtender by vm.altasSinAtender.collectAsState()
+    val tiempoPromedioResolucion by vm.tiempoPromedioResolucion.collectAsState()
 
     Scaffold(
         containerColor = FondoSoporte,
@@ -139,6 +140,42 @@ fun PanelScreen(
                         fondo = Color(0xFFDCFCE7),
                         color = Color(0xFF16A34A)
                     )
+                }
+            }
+
+            item {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(18.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color.White)
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Column {
+                            Text(
+                                "Tiempo promedio de resolución",
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 14.sp,
+                                color = Color(0xFF374151)
+                            )
+                            Text(
+                                "Calculado sobre tickets cerrados",
+                                fontSize = 11.sp,
+                                color = Color(0xFF9CA3AF)
+                            )
+                        }
+                        Text(
+                            text = tiempoPromedioResolucion,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 18.sp,
+                            color = MoradoSoporte
+                        )
+                    }
                 }
             }
 
