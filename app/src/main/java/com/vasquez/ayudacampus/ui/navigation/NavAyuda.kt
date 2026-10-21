@@ -21,9 +21,14 @@ import com.vasquez.ayudacampus.ui.cliente.MisTicketsScreen
 import com.vasquez.ayudacampus.ui.cliente.NuevoTicketScreen
 import com.vasquez.ayudacampus.ui.cliente.SplashScreen
 import com.vasquez.ayudacampus.ui.soporte.BandejaScreen
+import com.vasquez.ayudacampus.ui.soporte.AtenderTicketScreen
+import com.vasquez.ayudacampus.ui.soporte.CategoriasScreen
+import com.vasquez.ayudacampus.ui.soporte.FormularioCategoriaScreen
 import com.vasquez.ayudacampus.ui.soporte.PanelScreen
 import com.vasquez.ayudacampus.viewmodel.AyudaViewModelFactory
 import com.vasquez.ayudacampus.viewmodel.BandejaViewModel
+import com.vasquez.ayudacampus.viewmodel.AtenderViewModel
+import com.vasquez.ayudacampus.viewmodel.CategoriasViewModel
 import com.vasquez.ayudacampus.viewmodel.MisTicketsViewModel
 import com.vasquez.ayudacampus.viewmodel.NuevoTicketViewModel
 import com.vasquez.ayudacampus.viewmodel.PanelViewModel
@@ -220,7 +225,26 @@ fun NavAyuda(preferencias: PreferenciasStore) {
         }
 
         composable(Rutas.CATEGORIAS) {
-            Text("Categorías")
+            val categoriasVm: CategoriasViewModel = viewModel(factory = factory)
+            CategoriasScreen(
+                vm = categoriasVm,
+                onPanelClick = { navController.navigate(Rutas.PANEL) },
+                onTicketsClick = { navController.navigate(Rutas.BANDEJA) },
+                onAjustesClick = { navController.navigate(Rutas.AJUSTES) },
+                onNuevaClick = { navController.navigate(Rutas.FORMULARIO_CATEGORIA) },
+                onEditarClick = { id -> navController.navigate("${Rutas.FORMULARIO_CATEGORIA}/$id") }
+            )
+        }
+
+        composable(Rutas.FORMULARIO_CATEGORIA) {
+            val categoriasVm: CategoriasViewModel = viewModel(factory = factory)
+            FormularioCategoriaScreen(categoriasVm, categoriaId = null, onVolver = { navController.popBackStack() })
+        }
+
+        composable("${Rutas.FORMULARIO_CATEGORIA}/{categoriaId}") { entrada ->
+            val categoriaId = entrada.arguments?.getString("categoriaId")?.toIntOrNull()
+            val categoriasVm: CategoriasViewModel = viewModel(factory = factory)
+            FormularioCategoriaScreen(categoriasVm, categoriaId = categoriaId, onVolver = { navController.popBackStack() })
         }
 
         composable(Rutas.AJUSTES) {
@@ -228,8 +252,27 @@ fun NavAyuda(preferencias: PreferenciasStore) {
         }
 
         composable("${Rutas.ATENDER_TICKET}/{ticketId}") { entrada ->
-            val ticketId = entrada.arguments?.getString("ticketId")
-            Text("Atender ticket $ticketId · Paso 11")
+            val ticketId = entrada.arguments?.getString("ticketId")?.toIntOrNull()
+            val soporteId = usuario?.id ?: usuarioIdGuardado
+            if (ticketId != null && soporteId > 0) {
+                val factoryAtender = remember(repo, preferencias, ticketId, soporteId) {
+                    AyudaViewModelFactory(repo, preferencias, usuarioId = soporteId, ticketId = ticketId)
+                }
+                val atenderVm: AtenderViewModel = viewModel(
+                    key = "atender_$ticketId",
+                    factory = factoryAtender
+                )
+                AtenderTicketScreen(
+                    vm = atenderVm,
+                    onVolver = { navController.popBackStack() },
+                    onPanelClick = { navController.navigate(Rutas.PANEL) },
+                    onTicketsClick = { navController.navigate(Rutas.BANDEJA) },
+                    onCategoriasClick = { navController.navigate(Rutas.CATEGORIAS) },
+                    onAjustesClick = { navController.navigate(Rutas.AJUSTES) }
+                )
+            } else {
+                Text("Cargando ticket y usuario de Soporte…")
+            }
         }
     }
 }

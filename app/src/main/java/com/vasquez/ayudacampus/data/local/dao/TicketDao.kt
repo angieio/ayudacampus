@@ -33,6 +33,9 @@ interface TicketDao {
     @Query("UPDATE tickets SET estado = 'ABIERTO', calificacion = NULL, fechaCierre = NULL WHERE id = :id")
     suspend fun reabrir(id: Int)
 
+    @Query("SELECT COUNT(*) FROM tickets WHERE categoriaId = :categoriaId")
+    suspend fun contarPorCategoriaId(categoriaId: Int): Int
+
     // --- Lectura (Requieren @Transaction por usar @Relation) ---
     @Transaction
     @Query("SELECT * FROM tickets WHERE clienteId = :clienteId ORDER BY fecha DESC")

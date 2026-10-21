@@ -12,4 +12,5 @@ object Rutas {
     const val CATEGORIAS = "categorias"
     const val AJUSTES = "ajustes"
     const val ATENDER_TICKET = "atender_ticket"
+    const val FORMULARIO_CATEGORIA = "formulario_categoria"
 }

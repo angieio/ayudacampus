@@ -20,6 +20,8 @@ class AyudaRepositoryRoom(private val db: AyudaDatabase) : AyudaRepository {
         return usuarioDao.login(correo.trim(), clave)
     }
 
+    override suspend fun obtenerUsuario(id: Int): Usuario? = usuarioDao.obtenerPorId(id)
+
     override fun observarCategorias(): Flow<List<Categoria>> {
         return categoriaDao.observarTodas()
     }
@@ -29,12 +31,15 @@ class AyudaRepositoryRoom(private val db: AyudaDatabase) : AyudaRepository {
     }
 
     override suspend fun guardarCategoria(c: Categoria) {
-        categoriaDao.insertar(c)
+        if (c.id == 0) categoriaDao.insertar(c) else categoriaDao.actualizar(c)
     }
 
     override suspend fun eliminarCategoria(c: Categoria) {
         categoriaDao.eliminar(c)
     }
+
+    override suspend fun contarTicketsPorCategoria(categoriaId: Int): Int =
+        ticketDao.contarPorCategoriaId(categoriaId)
 
     override suspend fun cambiarActiva(id: Int, activa: Boolean) {
         categoriaDao.cambiarActiva(id, activa)

@@ -23,10 +23,11 @@ import java.util.Locale
 @Composable
 fun BurbujaComentario(
     comentario: Comentario,
-    esPropio: Boolean
+    esPropio: Boolean,
+    colorPropio: Color = Color(0xFF0891B2)
 ) {
     val colorBurbuja = if (esPropio) {
-        Color(0xFF0891B2)
+        colorPropio
     } else {
         Color(0xFFEDE4FF)
     }

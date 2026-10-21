@@ -47,6 +47,14 @@ class AyudaViewModelFactory(
             return BandejaViewModel(repo) as T
         }
 
+        if (modelClass.isAssignableFrom(AtenderViewModel::class.java) && ticketId != null && usuarioId != null) {
+            return AtenderViewModel(repo, ticketId, usuarioId) as T
+        }
+
+        if (modelClass.isAssignableFrom(CategoriasViewModel::class.java)) {
+            return CategoriasViewModel(repo) as T
+        }
+
         throw IllegalArgumentException("ViewModel desconocido o faltan sus datos")
     }
 }

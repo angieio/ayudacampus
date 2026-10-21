@@ -12,11 +12,13 @@ import kotlinx.coroutines.flow.Flow
 interface AyudaRepository {
     // Usuarios
     suspend fun login(correo: String, clave: String): Usuario?
+    suspend fun obtenerUsuario(id: Int): Usuario?
     // Categorías (ejemplo resuelto)
     fun observarCategorias(): Flow<List<Categoria>>
     fun observarCategoriasActivas(): Flow<List<Categoria>>
     suspend fun guardarCategoria(c: Categoria)
     suspend fun eliminarCategoria(c: Categoria)
+    suspend fun contarTicketsPorCategoria(categoriaId: Int): Int
     suspend fun cambiarActiva(id: Int, activa: Boolean)
     // Tickets
     suspend fun crearTicket(
