@@ -126,7 +126,7 @@ object DatosIniciales {
                 id = 1,
                 ticketId = 1,
                 autorId = 2,
-                autorNombre = "María Soporte",
+                autorNombre = "María Soto",
                 autorRol = "ADMIN",
                 texto = "Estamos revisando la conexion",
                 fecha = ahora - hora
@@ -143,18 +143,18 @@ object DatosIniciales {
             val c3 = Comentario(
                 id = 3,
                 ticketId = 4,
-                autorId = 1,
-                autorNombre = "Juan Pérez",
-                autorRol = "CLIENTE",
+                autorId = 2,
+                autorNombre = "María Soto",
+                autorRol = "ADMIN",
                 texto = "Reiniciamos el equipo; por favor, prueba de nuevo.",
                 fecha = ahora - 3 * hora
             )
             val c4 = Comentario(
                 id = 4,
                 ticketId = 4,
-                autorId = 2,
-                autorNombre = "María Soto",
-                autorRol = "ADMIN",
+                autorId = 1,
+                autorNombre = "Juan Pérez",
+                autorRol = "CLIENTE",
                 texto = "Ya pude ingresar al campus. ¡Gracias!",
                 fecha = ahora - 2 * hora
             )

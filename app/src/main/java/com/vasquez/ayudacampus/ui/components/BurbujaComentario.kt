@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -29,13 +30,13 @@ fun BurbujaComentario(
     val colorBurbuja = if (esPropio) {
         colorPropio
     } else {
-        Color(0xFFEDE4FF)
+        MaterialTheme.colorScheme.surfaceVariant
     }
 
     val colorTexto = if (esPropio) {
         Color.White
     } else {
-        Color(0xFF252238)
+        MaterialTheme.colorScheme.onSurfaceVariant
     }
 
     val hora = SimpleDateFormat("HH:mm", Locale.getDefault())

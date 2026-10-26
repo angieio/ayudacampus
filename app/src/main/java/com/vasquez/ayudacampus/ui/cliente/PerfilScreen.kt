@@ -6,14 +6,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ConfirmationNumber
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.SwapHoriz
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -34,6 +32,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.vasquez.ayudacampus.data.local.entity.Usuario
 import com.vasquez.ayudacampus.model.EstadoTicket
+import com.vasquez.ayudacampus.ui.components.AppTopBar
+import com.vasquez.ayudacampus.ui.components.AyudaButton
 import com.vasquez.ayudacampus.viewmodel.MisTicketsViewModel
 
 @Composable
@@ -54,6 +54,9 @@ fun PerfilScreen(
     val resueltos = tickets.count { it.ticket.estado == EstadoTicket.RESUELTO.name }
 
     Scaffold(
+        topBar = {
+            AppTopBar(titulo = "Perfil")
+        },
         bottomBar = {
             NavigationBar {
                 NavigationBarItem(false, onTicketsClick, icon = { Icon(Icons.Default.ConfirmationNumber, null) }, label = { Text("Tickets") })
@@ -66,7 +69,6 @@ fun PerfilScreen(
             Modifier.fillMaxSize().padding(padding).padding(horizontal = 18.dp, vertical = 12.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Text("Perfil", modifier = Modifier.align(Alignment.CenterHorizontally), fontSize = 20.sp, fontWeight = FontWeight.Bold)
             Card(Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = Color(0xFFCFFAFE))) {
                 Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
                     Icon(Icons.Default.Person, null, tint = Color(0xFF0891B2))
@@ -82,14 +84,27 @@ fun PerfilScreen(
                 ContadorPerfil("$resueltos", "Resueltos", Color(0xFFDCFCE7), Modifier.weight(1f))
                 ContadorPerfil("${tickets.size}", "Total", Color(0xFFCFFAFE), Modifier.weight(1f))
             }
-            Button(onClick = onCambiarPerfil, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(14.dp)) {
-                Icon(Icons.Default.SwapHoriz, null)
-                Column(Modifier.weight(1f).padding(start = 10.dp)) {
-                    Text("Cambiar de perfil")
-                    Text("Modo práctico · ir a Soporte TI", fontSize = 11.sp)
+            AyudaButton(
+                texto = "Cambiar de perfil",
+                onClick = onCambiarPerfil,
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(14.dp),
+                contenido = {
+                    Icon(Icons.Default.SwapHoriz, contentDescription = null)
+                    Column(
+                        Modifier
+                            .weight(1f)
+                            .padding(start = 10.dp)
+                    ) {
+                        Text("Cambiar de perfil")
+                        Text(
+                            "Modo práctico · ir a Soporte TI",
+                            fontSize = 11.sp
+                        )
+                    }
+                    Text("›")
                 }
-                Text("›")
-            }
+            )
             Text("Preferencias", fontWeight = FontWeight.Bold)
             Card(Modifier.fillMaxWidth()) {
                 Column {

@@ -32,6 +32,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.vasquez.ayudacampus.model.Rol
+import com.vasquez.ayudacampus.ui.components.AyudaButton
 import com.vasquez.ayudacampus.ui.components.AyudaTextField
 import com.vasquez.ayudacampus.viewmodel.SesionViewModel
 
@@ -139,18 +140,16 @@ fun LoginScreen(vm: SesionViewModel) {
 
         Spacer(Modifier.height(24.dp))
 
-        Button(
+        AyudaButton(
+            texto = "Ingresar",
             onClick = { vm.login(correo, clave, rolSeleccionado) },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp),
-            shape = RoundedCornerShape(14.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = colorRol
-            )
-        ) {
-            Text("Ingresar", fontWeight = FontWeight.Bold)
-        }
+            containerColor = colorRol,
+            contentColor = Color.White,
+            shape = RoundedCornerShape(14.dp)
+        )
 
         if (rolSeleccionado == Rol.CLIENTE) {
             Text(

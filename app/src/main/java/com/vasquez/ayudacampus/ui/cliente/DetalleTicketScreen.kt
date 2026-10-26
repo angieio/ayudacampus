@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -18,7 +17,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Category
 import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.Computer
@@ -28,8 +26,6 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Print
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material.icons.filled.Wifi
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -58,14 +54,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.vasquez.ayudacampus.data.local.relation.TicketConDetalle
 import com.vasquez.ayudacampus.model.EstadoTicket
+import com.vasquez.ayudacampus.ui.components.AppTopBar
+import com.vasquez.ayudacampus.ui.components.AyudaButton
 import com.vasquez.ayudacampus.ui.components.BurbujaComentario
+import com.vasquez.ayudacampus.ui.components.EstadoChip
 import com.vasquez.ayudacampus.ui.components.Estrellas
+import com.vasquez.ayudacampus.ui.components.PrioridadChip
 import com.vasquez.ayudacampus.ui.components.StepperTicket
 import com.vasquez.ayudacampus.viewmodel.TicketDetalleViewModel
 
-private val FondoDetalle = Color(0xFFF7FDFE)
 private val CianDetalle = Color(0xFF0891B2)
-private val VioletaDetalle = Color(0xFF7C3AED)
 
 @Composable
 fun DetalleTicketScreen(
@@ -91,7 +89,7 @@ fun DetalleTicketScreen(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(FondoDetalle),
+                .background(MaterialTheme.colorScheme.background),
             contentAlignment = Alignment.Center
         ) {
             Text("Cargando ticket...")
@@ -109,9 +107,9 @@ fun DetalleTicketScreen(
     val mostrarComposer = !esCerrado && !esResuelto
 
     Scaffold(
-        containerColor = FondoDetalle,
+        containerColor = MaterialTheme.colorScheme.background,
         bottomBar = {
-            NavigationBar(containerColor = Color.White) {
+            NavigationBar(containerColor = MaterialTheme.colorScheme.surface) {
                 NavigationBarItem(
                     selected = true,
                     onClick = onTicketsClick,
@@ -147,33 +145,10 @@ fun DetalleTicketScreen(
                 .fillMaxSize()
                 .padding(padding)
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(52.dp)
-                    .padding(horizontal = 8.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                IconButton(onClick = onVolver) {
-                    Icon(
-                        imageVector = Icons.Default.ArrowBack,
-                        contentDescription = "Volver"
-                    )
-                }
-
-                Box(
-                    modifier = Modifier.weight(1f),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = "Ticket #${ticketDetalle.ticket.id.toString().padStart(4, '0')}",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 17.sp
-                    )
-                }
-
-                Spacer(Modifier.size(48.dp))
-            }
+            AppTopBar(
+                titulo = "Ticket #${ticketDetalle.ticket.id.toString().padStart(4, '0')}",
+                onVolver = onVolver
+            )
 
             LazyColumn(
                 modifier = Modifier
@@ -239,31 +214,24 @@ fun DetalleTicketScreen(
                             label = { Text("Comentario final (opcional)") },
                             minLines = 2,
                             colors = TextFieldDefaults.colors(
-                                focusedContainerColor = Color.White,
-                                unfocusedContainerColor = Color.White
+                                focusedContainerColor = MaterialTheme.colorScheme.surface,
+                                unfocusedContainerColor = MaterialTheme.colorScheme.surface
                             )
                         )
                     }
 
                     item {
-                        Button(
-                            onClick = {
-                                vm.cerrar(calificacion, comentarioFinal)
-                            },
+                        AyudaButton(
+                            texto = "Confirmar y cerrar",
+                            onClick = { vm.cerrar(calificacion, comentarioFinal) },
                             enabled = calificacion in 1..5,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(54.dp),
-                            shape = RoundedCornerShape(14.dp),
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = CianDetalle
-                            )
-                        ) {
-                            Text(
-                                text = "Confirmar y cerrar",
-                                fontWeight = FontWeight.Bold
-                            )
-                        }
+                            containerColor = CianDetalle,
+                            contentColor = Color.White,
+                            shape = RoundedCornerShape(14.dp)
+                        )
                     }
 
                     item {
@@ -297,7 +265,7 @@ fun DetalleTicketScreen(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(FondoDetalle)
+                        .background(MaterialTheme.colorScheme.background)
                         .padding(
                             start = 16.dp,
                             end = 16.dp,
@@ -315,8 +283,8 @@ fun DetalleTicketScreen(
                         shape = RoundedCornerShape(28.dp),
                         placeholder = { Text("Escribe un comentario...") },
                         colors = TextFieldDefaults.colors(
-                            focusedContainerColor = Color.White,
-                            unfocusedContainerColor = Color.White
+                            focusedContainerColor = MaterialTheme.colorScheme.surface,
+                            unfocusedContainerColor = MaterialTheme.colorScheme.surface
                         )
                     )
 
@@ -363,7 +331,7 @@ private fun ResumenTicket(detalle: TicketConDetalle) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(18.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(Modifier.padding(15.dp)) {
@@ -372,13 +340,22 @@ private fun ResumenTicket(detalle: TicketConDetalle) {
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp
             )
-
             Row(
                 modifier = Modifier.padding(top = 8.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                ChipDetalle(estado.name.toEstadoLegible(), colorEstado)
-                ChipDetalle(detalle.ticket.prioridad.toPrioridadLegible(), colorPrioridad)
+                EstadoChip(
+                    estado = estado.name,
+                    fondoPersonalizado = colorEstado.copy(alpha = 0.12f),
+                    colorTextoPersonalizado = colorEstado
+                )
+
+                PrioridadChip(
+                    prioridad = detalle.ticket.prioridad,
+                    fondoPersonalizado = colorPrioridad.copy(alpha = 0.12f),
+                    colorTextoPersonalizado = colorPrioridad
+                )
             }
 
             Row(
@@ -390,27 +367,11 @@ private fun ResumenTicket(detalle: TicketConDetalle) {
                 Text(
                     text = "${detalle.categoria.nombre} · ${detalle.ticket.ubicacion}",
                     modifier = Modifier.padding(start = 6.dp),
-                    color = Color(0xFF6B7280),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontSize = 12.sp
                 )
             }
         }
-    }
-}
-
-@Composable
-private fun ChipDetalle(texto: String, color: Color) {
-    Surface(
-        color = color.copy(alpha = 0.12f),
-        shape = RoundedCornerShape(50)
-    ) {
-        Text(
-            text = texto,
-            color = color,
-            fontSize = 11.sp,
-            fontWeight = FontWeight.SemiBold,
-            modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp)
-        )
     }
 }
 
@@ -458,7 +419,7 @@ private fun CalificacionCard(
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(18.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(
@@ -484,7 +445,7 @@ private fun CalificacionCard(
                 } else {
                     "$calificacion de 5 estrellas"
                 },
-                color = Color(0xFF6B7280),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontSize = 12.sp
             )
         }
@@ -510,19 +471,6 @@ private fun IconoCategoria(icono: String) {
     )
 }
 
-private fun String.toEstadoLegible(): String = when (this) {
-    "ABIERTO" -> "Abierto"
-    "EN_PROCESO" -> "En proceso"
-    "RESUELTO" -> "Resuelto"
-    "CERRADO" -> "Cerrado"
-    else -> this
-}
 
-private fun String.toPrioridadLegible(): String = when (this) {
-    "ALTA" -> "Alta"
-    "MEDIA" -> "Media"
-    "BAJA" -> "Baja"
-    else -> this
-}
 
 

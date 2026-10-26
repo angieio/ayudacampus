@@ -33,7 +33,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.vasquez.ayudacampus.data.local.entity.Categoria
+import com.vasquez.ayudacampus.ui.components.AppTopBar
 import com.vasquez.ayudacampus.viewmodel.CategoriasViewModel
 
 @Composable
@@ -49,6 +49,9 @@ fun CategoriasScreen(
     val snackbar = androidx.compose.runtime.remember { SnackbarHostState() }
     val mensaje by vm.mensaje.collectAsState()
     Scaffold(
+        topBar = {
+            AppTopBar(titulo = "Categorías")
+        },
         snackbarHost = { SnackbarHost(snackbar) },
         floatingActionButton = { FloatingActionButton(onClick = onNuevaClick) { Icon(Icons.Default.Add, "Nueva categoría") } },
         bottomBar = {
@@ -65,7 +68,6 @@ fun CategoriasScreen(
             contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            item { Text("Categorías", Modifier.padding(bottom = 8.dp)) }
             items(categorias, key = { it.id }) { categoria ->
                 Card(Modifier.fillMaxWidth()) {
                     androidx.compose.foundation.layout.Row(

@@ -60,7 +60,7 @@ fun MisTicketsScreen(
     val cantidadAbiertos by vm.cantidadAbiertos.collectAsState()
 
     Scaffold(
-        containerColor = Color(0xFFF8FBFD),
+        containerColor = MaterialTheme.colorScheme.background,
         floatingActionButton = {
             FloatingActionButton(
                 onClick = onNuevoClick,
@@ -71,7 +71,7 @@ fun MisTicketsScreen(
             }
         },
         bottomBar = {
-            NavigationBar(containerColor = Color.White) {
+            NavigationBar(containerColor = MaterialTheme.colorScheme.surface) {
                 NavigationBarItem(
                     selected = true,
                     onClick = {},
@@ -120,7 +120,7 @@ fun MisTicketsScreen(
                     Text(
                         text = "Hola, $nombreUsuario · $cantidadAbiertos abiertos",
                         style = MaterialTheme.typography.bodySmall,
-                        color = Color(0xFF929AA7)
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
 
@@ -144,12 +144,12 @@ fun MisTicketsScreen(
                     Text("Buscar por título o número...")
                 },
                 leadingIcon = {
-                    Text("⌕", color = Color.Gray)
+                    Text("⌕", color = MaterialTheme.colorScheme.onSurfaceVariant)
                 },
                 colors = TextFieldDefaults.colors(
                     focusedIndicatorColor = Turquesa,
-                    focusedContainerColor = Color.White,
-                    unfocusedContainerColor = Color.White
+                    focusedContainerColor = MaterialTheme.colorScheme.surface,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.surface
                 )
             )
 
@@ -179,7 +179,7 @@ fun MisTicketsScreen(
                 ) {
                     Text(
                         text = "No tienes tickets aquí",
-                        color = Color(0xFF929AA7)
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             } else {

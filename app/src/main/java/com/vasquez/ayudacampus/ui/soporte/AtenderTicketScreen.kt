@@ -39,6 +39,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.vasquez.ayudacampus.model.EstadoTicket
 import com.vasquez.ayudacampus.model.Prioridad
+import com.vasquez.ayudacampus.ui.components.AppTopBar
+import com.vasquez.ayudacampus.ui.components.AyudaButton
 import com.vasquez.ayudacampus.ui.components.BurbujaComentario
 import com.vasquez.ayudacampus.ui.components.EstadoChip
 import com.vasquez.ayudacampus.ui.components.PrioridadChip
@@ -74,10 +76,10 @@ fun AtenderTicketScreen(
             Text("Cargando ticket…", Modifier.padding(padding).padding(24.dp))
         } else {
             Column(Modifier.fillMaxSize().padding(padding)) {
-                Row(Modifier.fillMaxWidth().padding(horizontal = 8.dp), verticalAlignment = Alignment.CenterVertically) {
-                    IconButton(onClick = onVolver) { Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver") }
-                    Text("Atender ticket #${item.ticket.id}", Modifier.weight(1f), fontWeight = FontWeight.Bold, fontSize = 18.sp)
-                }
+                AppTopBar(
+                    titulo = "Atender ticket #${item.ticket.id}",
+                    onVolver = onVolver
+                )
                 LazyColumn(
                     modifier = Modifier.weight(1f),
                     contentPadding = PaddingValues(start = 16.dp, end = 16.dp, bottom = 14.dp),
@@ -140,12 +142,15 @@ fun AtenderTicketScreen(
                                 Icon(Icons.AutoMirrored.Filled.Send, contentDescription = "Enviar")
                             }
                         }
-                        Button(
+                        AyudaButton(
+                            texto = "Guardar cambios",
                             onClick = vm::guardar,
                             enabled = !cerrado,
-                            modifier = Modifier.fillMaxWidth().padding(top = 12.dp),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 12.dp),
                             shape = RoundedCornerShape(14.dp)
-                        ) { Text("Guardar cambios") }
+                        )
                     }
                 }
             }

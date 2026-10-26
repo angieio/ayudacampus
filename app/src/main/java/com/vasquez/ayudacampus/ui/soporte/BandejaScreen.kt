@@ -25,9 +25,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.vasquez.ayudacampus.ui.components.AppTopBar
 import com.vasquez.ayudacampus.ui.components.TicketCard
 import com.vasquez.ayudacampus.viewmodel.BandejaViewModel
 import com.vasquez.ayudacampus.viewmodel.FiltroBandeja
@@ -46,6 +45,9 @@ fun BandejaScreen(
     val filtro by vm.filtroSeleccionado.collectAsState()
 
     Scaffold(
+        topBar = {
+            AppTopBar(titulo = "Tickets")
+        },
         bottomBar = {
             NavigationBar(containerColor = Color.White) {
                 NavigationBarItem(
@@ -81,12 +83,6 @@ fun BandejaScreen(
                 .padding(padding)
                 .padding(horizontal = 16.dp)
         ) {
-            Text(
-                text = "Tickets",
-                modifier = Modifier.padding(top = 16.dp, bottom = 12.dp),
-                fontSize = 22.sp,
-                fontWeight = FontWeight.Bold
-            )
 
             androidx.compose.foundation.lazy.LazyRow(
                 modifier = Modifier.fillMaxWidth(),

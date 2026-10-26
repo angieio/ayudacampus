@@ -39,6 +39,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.border
 import androidx.compose.ui.unit.dp
 import com.vasquez.ayudacampus.data.local.entity.Categoria
+import com.vasquez.ayudacampus.ui.components.AppTopBar
+import com.vasquez.ayudacampus.ui.components.AyudaButton
 import com.vasquez.ayudacampus.viewmodel.CategoriasViewModel
 
 @Composable
@@ -67,15 +69,19 @@ fun FormularioCategoriaScreen(
     }
     LaunchedEffect(vm) { vm.guardado.collect { onVolver() } }
 
-    Scaffold { padding ->
-        Column(Modifier.padding(padding).padding(horizontal = 22.dp, vertical = 12.dp)) {
-            androidx.compose.foundation.layout.Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                TextButton(
-                    onClick = onVolver,
-                    modifier = Modifier.align(Alignment.CenterStart)
-                ) { Text("‹") }
-                Text(if (categoriaId == null) "Nueva categoría" else "Editar categoría")
-            }
+    Scaffold (
+        topBar = {
+            AppTopBar(
+                titulo = if (categoriaId == null) "Nueva categoría" else "Editar categoría",
+                onVolver = onVolver
+            )
+        }
+    ){ padding ->
+        Column(
+            modifier = Modifier
+                .padding(padding)
+                .padding(horizontal = 22.dp, vertical = 12.dp)
+        ){
             Spacer(Modifier.height(10.dp))
             OutlinedTextField(
                 value = nombre,
@@ -128,14 +134,27 @@ fun FormularioCategoriaScreen(
                     }
                 }
             }
-            Button(
+            AyudaButton(
+                texto = "Guardar categoría",
                 onClick = {
-                    if (nombre.isBlank()) error = "El nombre es obligatorio."
-                    else vm.guardar(Categoria(id = categoriaId ?: 0, nombre = nombre, icono = icono, activa = activa))
+                    if (nombre.isBlank()) {
+                        error = "El nombre es obligatorio."
+                    } else {
+                        vm.guardar(
+                            Categoria(
+                                id = categoriaId ?: 0,
+                                nombre = nombre,
+                                icono = icono,
+                                activa = activa
+                            )
+                        )
+                    }
                 },
-                modifier = Modifier.fillMaxWidth().padding(top = 18.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 18.dp),
                 shape = RoundedCornerShape(12.dp)
-            ) { Text("Guardar categoría") }
+            )
             OutlinedButton(onClick = onVolver, modifier = Modifier.fillMaxWidth().padding(top = 8.dp)) {
                 Text("Cancelar")
             }

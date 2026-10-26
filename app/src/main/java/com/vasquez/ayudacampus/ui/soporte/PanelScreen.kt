@@ -19,6 +19,7 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
@@ -38,7 +39,6 @@ import com.vasquez.ayudacampus.ui.components.graficos.GraficoDona
 import com.vasquez.ayudacampus.viewmodel.PanelViewModel
 
 private val MoradoSoporte = Color(0xFF7C3AED)
-private val FondoSoporte = Color(0xFFFAF8FF)
 
 @Composable
 fun PanelScreen(
@@ -56,9 +56,9 @@ fun PanelScreen(
     val altasSinAtender by vm.altasSinAtender.collectAsState()
 
     Scaffold(
-        containerColor = FondoSoporte,
+        containerColor = MaterialTheme.colorScheme.background,
         bottomBar = {
-            NavigationBar(containerColor = Color.White) {
+            NavigationBar(containerColor = MaterialTheme.colorScheme.surface) {
                 NavigationBarItem(
                     selected = true,
                     onClick = {},
@@ -153,7 +153,7 @@ fun PanelScreen(
                         .fillMaxWidth()
                         .padding(top = 7.dp),
                     shape = RoundedCornerShape(18.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color.White)
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
                 ) {
                     GraficoDona(porEstado)
                 }
@@ -170,7 +170,7 @@ fun PanelScreen(
                         .fillMaxWidth()
                         .padding(top = 7.dp),
                     shape = RoundedCornerShape(18.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color.White)
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
                 ) {
                     GraficoBarras(porCategoria)
                 }

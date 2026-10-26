@@ -18,13 +18,13 @@ import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
-import androidx.compose.material3.Button
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,6 +33,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.vasquez.ayudacampus.data.local.entity.Usuario
+import com.vasquez.ayudacampus.ui.components.AppTopBar
+import com.vasquez.ayudacampus.ui.components.AyudaButton
 
 @Composable
 fun AjustesScreen(
@@ -50,7 +52,10 @@ fun AjustesScreen(
     onCategoriasClick: () -> Unit
 ) {
     Scaffold(
-        containerColor = Color(0xFFFAF8FF),
+        topBar = {
+            AppTopBar(titulo = "Ajustes")
+        },
+        containerColor = MaterialTheme.colorScheme.background,
         bottomBar = {
             NavigationBar {
                 NavigationBarItem(false, onPanelClick, icon = { Icon(Icons.Default.BarChart, null) }, label = { Text("Panel") })
@@ -64,8 +69,7 @@ fun AjustesScreen(
             Modifier.fillMaxSize().padding(padding).padding(horizontal = 18.dp, vertical = 12.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Text("Ajustes", Modifier.align(Alignment.CenterHorizontally), fontSize = 20.sp, fontWeight = FontWeight.Bold)
-            Card(Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = Color(0xFFEDE4FF))) {
+            Card(Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)) {
                 Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
                     Icon(Icons.Default.Person, null, tint = Color(0xFF7C3AED))
                     Column(Modifier.padding(start = 12.dp)) {
@@ -75,14 +79,24 @@ fun AjustesScreen(
                     }
                 }
             }
-            Button(onClick = onCambiarPerfil, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(14.dp)) {
-                Icon(Icons.Default.SwapHoriz, null)
-                Column(Modifier.weight(1f).padding(start = 10.dp)) {
-                    Text("Cambiar de perfil")
-                    Text("Modo práctico · ir a Estudiante", fontSize = 11.sp)
+            AyudaButton(
+                texto = "Cambiar de perfil",
+                onClick = onCambiarPerfil,
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(14.dp),
+                contenido = {
+                    Icon(Icons.Default.SwapHoriz, contentDescription = null)
+                    Column(
+                        Modifier
+                            .weight(1f)
+                            .padding(start = 10.dp)
+                    ) {
+                        Text("Cambiar de perfil")
+                        Text("Modo práctico · ir a Estudiante", fontSize = 11.sp)
+                    }
+                    Text("›")
                 }
-                Text("›")
-            }
+            )
             Text("Preferencias", fontWeight = FontWeight.Bold)
             Card(Modifier.fillMaxWidth()) {
                 Column {
@@ -91,7 +105,7 @@ fun AjustesScreen(
                     PreferenciaAjuste("Recibir tickets", "Abrir o cerrar la mesa de ayuda", recibirTickets, onRecibirTicketsChange)
                 }
             }
-            Card(Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = Color(0xFFF2EDFF))) {
+            Card(Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)) {
                 Column(Modifier.padding(12.dp)) {
                     Text("Se guardan en el dispositivo", fontSize = 12.sp)
                     Text("con DataStore", color = Color(0xFF7C3AED), fontWeight = FontWeight.Bold, fontSize = 12.sp)

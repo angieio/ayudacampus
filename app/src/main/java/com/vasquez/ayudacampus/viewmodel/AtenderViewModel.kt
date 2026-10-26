@@ -44,15 +44,23 @@ class AtenderViewModel(
     private val _guardado = Channel<Unit>(Channel.BUFFERED)
     val guardado = _guardado.receiveAsFlow()
 
+    private var estadoEditado = false
+    private var prioridadEditada = false
+
     init {
         viewModelScope.launch { _soporte.value = repo.obtenerUsuario(soporteId) }
         viewModelScope.launch {
             ticket.collect { detalle ->
                 detalle?.let {
-                    _estado.value = runCatching { EstadoTicket.valueOf(it.ticket.estado) }
-                        .getOrDefault(EstadoTicket.ABIERTO)
-                    _prioridad.value = runCatching { Prioridad.valueOf(it.ticket.prioridad) }
-                        .getOrDefault(Prioridad.MEDIA)
+                    if (!estadoEditado) {
+                        _estado.value = runCatching { EstadoTicket.valueOf(it.ticket.estado) }
+                            .getOrDefault(EstadoTicket.ABIERTO)
+                    }
+
+                    if (!prioridadEditada) {
+                        _prioridad.value = runCatching { Prioridad.valueOf(it.ticket.prioridad) }
+                            .getOrDefault(Prioridad.MEDIA)
+                    }
                 }
             }
         }
@@ -60,11 +68,13 @@ class AtenderViewModel(
 
     fun cambiarEstado(estado: EstadoTicket) {
         if (estado == EstadoTicket.CERRADO || ticket.value?.ticket?.estado == EstadoTicket.CERRADO.name) return
+        estadoEditado = true
         _estado.value = estado
     }
 
     fun cambiarPrioridad(prioridad: Prioridad) {
         if (ticket.value?.ticket?.estado == EstadoTicket.CERRADO.name) return
+        prioridadEditada = true
         _prioridad.value = prioridad
     }
 
@@ -87,6 +97,8 @@ class AtenderViewModel(
         viewModelScope.launch {
             repo.cambiarEstado(ticketId, _estado.value)
             repo.cambiarPrioridad(ticketId, _prioridad.value)
+            estadoEditado = false
+            prioridadEditada = false
             _guardado.send(Unit)
         }
     }

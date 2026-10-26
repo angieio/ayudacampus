@@ -7,6 +7,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
@@ -16,15 +18,32 @@ fun AyudaButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
+    containerColor: Color? = null,
+    contentColor: Color? = null,
+    shape: Shape? = null,
     contenido: @Composable RowScope.() -> Unit = {
         Text(texto, fontWeight = FontWeight.SemiBold)
     }
 ) {
+    val fondoBoton = containerColor ?: MaterialTheme.colorScheme.primary
+
+    val textoBoton = contentColor ?: if (containerColor == null) {
+        MaterialTheme.colorScheme.onPrimary
+    } else {
+        Color.White
+    }
+
     Button(
         onClick = onClick,
         modifier = modifier,
         enabled = enabled,
-        shape = MaterialTheme.shapes.medium,
+        shape = shape ?: MaterialTheme.shapes.medium,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = fondoBoton,
+            contentColor = textoBoton,
+            disabledContainerColor = fondoBoton.copy(alpha = 0.38f),
+            disabledContentColor = textoBoton.copy(alpha = 0.38f)
+        ),
         contentPadding = ButtonDefaults.ContentPadding,
         elevation = ButtonDefaults.buttonElevation(defaultElevation = 2.dp),
         content = contenido

@@ -3,6 +3,7 @@ package com.vasquez.ayudacampus.ui.components
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -22,7 +23,7 @@ fun AppTopBar(
     onVolver: (() -> Unit)? = null,
     acciones: @Composable RowScope.() -> Unit = {}
 ) {
-    TopAppBar(
+    CenterAlignedTopAppBar(
         modifier = modifier,
         title = {
             Text(

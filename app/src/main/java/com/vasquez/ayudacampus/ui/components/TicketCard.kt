@@ -23,6 +23,7 @@ import androidx.compose.material.icons.outlined.Wifi
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -50,7 +51,7 @@ fun TicketCard(
             .fillMaxWidth()
             .clickable(onClick = onClick),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Row(
@@ -96,7 +97,7 @@ fun TicketCard(
                     fontSize = 14.sp,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    color = Color(0xFF273244)
+                    color = MaterialTheme.colorScheme.onSurface
                 )
 
                 Spacer(Modifier.height(5.dp))
@@ -108,7 +109,7 @@ fun TicketCard(
                         "#${ticket.id.toString().padStart(4, '0')} · ${ticket.ubicacion}"
                     },
                     fontSize = 11.sp,
-                    color = Color(0xFF8993A1),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -127,7 +128,7 @@ fun TicketCard(
                     Text(
                         text = tiempoRelativo(ticket.fecha),
                         fontSize = 10.sp,
-                        color = Color(0xFF929AA7)
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }

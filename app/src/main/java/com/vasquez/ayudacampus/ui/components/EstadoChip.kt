@@ -14,7 +14,9 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun EstadoChip(
     estado: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    fondoPersonalizado: Color? = null,
+    colorTextoPersonalizado: Color? = null
 ) {
     val estadoNormalizado = estado.trim().uppercase()
 
@@ -26,10 +28,13 @@ fun EstadoChip(
         else -> Triple(estado, Color(0xFFF0F1F3), Color(0xFF6B7280))
     }
 
+    val colorFondo = fondoPersonalizado ?: fondo
+    val colorContenido = colorTextoPersonalizado ?: colorTexto
+
     Surface(
         modifier = modifier,
-        color = fondo,
-        contentColor = colorTexto,
+        color = colorFondo,
+        contentColor = colorContenido,
         shape = RoundedCornerShape(50)
     ) {
         Text(
