@@ -31,6 +31,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -54,6 +55,7 @@ fun PanelScreen(
     val porEstado by vm.porEstado.collectAsState()
     val porCategoria by vm.porCategoria.collectAsState()
     val altasSinAtender by vm.altasSinAtender.collectAsState()
+    val modoOscuro = MaterialTheme.colorScheme.background.luminance() < 0.5f
 
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
@@ -107,7 +109,7 @@ fun PanelScreen(
                     )
                     Text(
                         "Mesa de ayuda TI · Hoy",
-                        color = Color(0xFF858C99),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         fontSize = 13.sp
                     )
                 }
@@ -123,21 +125,24 @@ fun PanelScreen(
                         valor = abiertos,
                         etiqueta = "Abiertos",
                         fondo = Color(0xFFFFF2C4),
-                        color = Color(0xFFD97706)
+                        color = Color(0xFFD97706),
+                        modoOscuro = modoOscuro
                     )
                     ContadorSoporte(
                         modifier = Modifier.weight(1f),
                         valor = enProceso,
                         etiqueta = "En proceso",
                         fondo = Color(0xFFDCEAFF),
-                        color = Color(0xFF2563EB)
+                        color = Color(0xFF2563EB),
+                        modoOscuro = modoOscuro
                     )
                     ContadorSoporte(
                         modifier = Modifier.weight(1f),
                         valor = resueltos,
                         etiqueta = "Resueltos",
                         fondo = Color(0xFFDCFCE7),
-                        color = Color(0xFF16A34A)
+                        color = Color(0xFF16A34A),
+                        modoOscuro = modoOscuro
                     )
                 }
             }
@@ -182,7 +187,7 @@ fun PanelScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .background(
-                                Color(0xFFFEE2E2),
+                                MaterialTheme.colorScheme.errorContainer,
                                 RoundedCornerShape(16.dp)
                             )
                             .padding(12.dp),
@@ -190,7 +195,7 @@ fun PanelScreen(
                     ) {
                         Text(
                             "⚠",
-                            color = Color(0xFFDC2626),
+                            color = MaterialTheme.colorScheme.error,
                             fontSize = 22.sp
                         )
                         Column(
@@ -200,20 +205,20 @@ fun PanelScreen(
                         ) {
                             Text(
                                 "$altasSinAtender tickets de prioridad Alta",
-                                color = Color(0xFF991B1B),
+                                color = MaterialTheme.colorScheme.onErrorContainer,
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 12.sp
                             )
                             Text(
                                 "sin atender hace más de 1 hora",
-                                color = Color(0xFF991B1B),
+                                color = MaterialTheme.colorScheme.onErrorContainer,
                                 fontSize = 11.sp
                             )
                         }
                         TextButton(onClick = onVerAltasClick) {
                             Text(
                                 "Ver",
-                                color = Color(0xFFDC2626),
+                                color = MaterialTheme.colorScheme.error,
                                 fontWeight = FontWeight.Bold
                             )
                         }
@@ -230,22 +235,29 @@ private fun ContadorSoporte(
     valor: Int,
     etiqueta: String,
     fondo: Color,
-    color: Color
+    color: Color,
+    modoOscuro: Boolean
 ) {
+    val fondoFinal = if (modoOscuro) MaterialTheme.colorScheme.surfaceVariant else fondo
+    val colorFinal = if (modoOscuro) MaterialTheme.colorScheme.onSurface else color
     Column(
         modifier = modifier
             .height(82.dp)
-            .background(fondo, RoundedCornerShape(18.dp))
+            .background(fondoFinal, RoundedCornerShape(18.dp))
             .padding(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
         Text(
             valor.toString(),
-            color = color,
+            color = colorFinal,
             fontSize = 25.sp,
             fontWeight = FontWeight.Bold
         )
-        Text(etiqueta, color = color, fontSize = 11.sp)
+        Text(
+            etiqueta,
+            color = if (modoOscuro) MaterialTheme.colorScheme.onSurfaceVariant else color,
+            fontSize = 11.sp
+        )
     }
 }

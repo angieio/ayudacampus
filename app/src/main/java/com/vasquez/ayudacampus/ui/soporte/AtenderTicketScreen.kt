@@ -19,10 +19,13 @@ import androidx.compose.material.icons.filled.ConfirmationNumber
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -64,7 +67,7 @@ fun AtenderTicketScreen(
     val cerrado = detalle?.ticket?.estado == EstadoTicket.CERRADO.name
 
     Scaffold(bottomBar = {
-        NavigationBar {
+        NavigationBar(containerColor = MaterialTheme.colorScheme.surface) {
             NavigationBarItem(false, onPanelClick, icon = { Icon(Icons.Default.BarChart, null) }, label = { Text("Panel") })
             NavigationBarItem(true, onTicketsClick, icon = { Icon(Icons.Default.ConfirmationNumber, null) }, label = { Text("Tickets") })
             NavigationBarItem(false, onCategoriasClick, icon = { Icon(Icons.Default.Category, null) }, label = { Text("Categorías") })
@@ -102,7 +105,13 @@ fun AtenderTicketScreen(
                                     selected = estado == opcion,
                                     onClick = { vm.cambiarEstado(opcion) },
                                     enabled = !cerrado && opcion != EstadoTicket.CERRADO,
-                                    label = { Text(opcion.etiquetaCorta(), fontSize = 10.sp) }
+                                    label = { Text(opcion.etiquetaCorta(), fontSize = 10.sp) },
+                                    colors = FilterChipDefaults.filterChipColors(
+                                        containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                                        labelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                        selectedContainerColor = Color(0xFF7C3AED),
+                                        selectedLabelColor = Color.White
+                                    )
                                 )
                             }
                         }
@@ -113,7 +122,13 @@ fun AtenderTicketScreen(
                                     selected = prioridad == opcion,
                                     onClick = { vm.cambiarPrioridad(opcion) },
                                     enabled = !cerrado,
-                                    label = { Text(opcion.etiqueta(), fontSize = 11.sp) }
+                                    label = { Text(opcion.etiqueta(), fontSize = 11.sp) },
+                                    colors = FilterChipDefaults.filterChipColors(
+                                        containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                                        labelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                        selectedContainerColor = Color(0xFF7C3AED),
+                                        selectedLabelColor = Color.White
+                                    )
                                 )
                             }
                         }
@@ -136,7 +151,12 @@ fun AtenderTicketScreen(
                                 enabled = !cerrado,
                                 placeholder = { Text("Responder al cliente…") },
                                 shape = RoundedCornerShape(28.dp),
-                                maxLines = 3
+                                maxLines = 3,
+                                colors = OutlinedTextFieldDefaults.colors(
+                                    focusedBorderColor = Color(0xFF7C3AED),
+                                    focusedLabelColor = Color(0xFF7C3AED),
+                                    cursorColor = Color(0xFF7C3AED)
+                                )
                             )
                             IconButton(onClick = { vm.responder() }, enabled = !cerrado) {
                                 Icon(Icons.AutoMirrored.Filled.Send, contentDescription = "Enviar")
@@ -149,6 +169,8 @@ fun AtenderTicketScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(top = 12.dp),
+                            containerColor = Color(0xFF7C3AED),
+                            contentColor = Color.White,
                             shape = RoundedCornerShape(14.dp)
                         )
                     }

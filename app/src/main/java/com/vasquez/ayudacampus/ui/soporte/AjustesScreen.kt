@@ -69,19 +69,21 @@ fun AjustesScreen(
             Modifier.fillMaxSize().padding(padding).padding(horizontal = 18.dp, vertical = 12.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Card(Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)) {
+            Card(Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)) {
                 Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Default.Person, null, tint = Color(0xFF7C3AED))
+                    Icon(Icons.Default.Person, null, tint = MaterialTheme.colorScheme.secondary)
                     Column(Modifier.padding(start = 12.dp)) {
                         Text("Soporte TI", fontWeight = FontWeight.Bold)
                         Text(usuario.correo, fontSize = 12.sp)
-                        Text("Perfil activo", color = Color(0xFF7C3AED), fontSize = 12.sp)
+                        Text("Perfil activo", color = MaterialTheme.colorScheme.secondary, fontSize = 12.sp)
                     }
                 }
             }
             AyudaButton(
                 texto = "Cambiar de perfil",
                 onClick = onCambiarPerfil,
+                containerColor = Color(0xFF7C3AED),
+                contentColor = Color.White,
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(14.dp),
                 contenido = {
@@ -108,7 +110,7 @@ fun AjustesScreen(
             Card(Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)) {
                 Column(Modifier.padding(12.dp)) {
                     Text("Se guardan en el dispositivo", fontSize = 12.sp)
-                    Text("con DataStore", color = Color(0xFF7C3AED), fontWeight = FontWeight.Bold, fontSize = 12.sp)
+                    Text("con DataStore", color = MaterialTheme.colorScheme.secondary, fontWeight = FontWeight.Bold, fontSize = 12.sp)
                 }
             }
             Spacer(Modifier.weight(1f))
@@ -124,7 +126,7 @@ private fun PreferenciaAjuste(titulo: String, detalle: String, checked: Boolean,
     Row(Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 7.dp), verticalAlignment = Alignment.CenterVertically) {
         Column(Modifier.weight(1f)) {
             Text(titulo, fontWeight = FontWeight.SemiBold)
-            Text(detalle, fontSize = 11.sp, color = Color.Gray)
+            Text(detalle, fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
         Switch(checked = checked, onCheckedChange = onChange)
     }

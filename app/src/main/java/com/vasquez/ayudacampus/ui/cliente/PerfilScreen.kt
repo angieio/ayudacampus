@@ -15,6 +15,7 @@ import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
@@ -52,6 +53,9 @@ fun PerfilScreen(
     val tickets by vm.tickets.collectAsState()
     val abiertos = tickets.count { it.ticket.estado == EstadoTicket.ABIERTO.name }
     val resueltos = tickets.count { it.ticket.estado == EstadoTicket.RESUELTO.name }
+    val fondoTarjeta = if (modoOscuro) Color(0xFF1B2028) else Color(0xFFCFFAFE)
+    val textoTarjeta = if (modoOscuro) Color(0xFFF3F4F6) else Color(0xFF1F2937)
+    val acentoCian = if (modoOscuro) Color(0xFF67D9E8) else Color(0xFF0891B2)
 
     Scaffold(
         topBar = {
@@ -69,25 +73,27 @@ fun PerfilScreen(
             Modifier.fillMaxSize().padding(padding).padding(horizontal = 18.dp, vertical = 12.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Card(Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = Color(0xFFCFFAFE))) {
+            Card(Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = fondoTarjeta)) {
                 Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Default.Person, null, tint = Color(0xFF0891B2))
+                    Icon(Icons.Default.Person, null, tint = acentoCian)
                     Column(Modifier.padding(start = 12.dp)) {
-                        Text(usuario.nombre, fontWeight = FontWeight.Bold)
-                        Text(usuario.correo, fontSize = 12.sp)
-                        Text("Estudiante", color = Color(0xFF0891B2), fontSize = 12.sp)
+                        Text(usuario.nombre, color = textoTarjeta, fontWeight = FontWeight.Bold)
+                        Text(usuario.correo, color = textoTarjeta, fontSize = 12.sp)
+                        Text("Estudiante", color = acentoCian, fontSize = 12.sp)
                     }
                 }
             }
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                ContadorPerfil("$abiertos", "Abiertos", Color(0xFFFFF2C4), Modifier.weight(1f))
-                ContadorPerfil("$resueltos", "Resueltos", Color(0xFFDCFCE7), Modifier.weight(1f))
-                ContadorPerfil("${tickets.size}", "Total", Color(0xFFCFFAFE), Modifier.weight(1f))
+                ContadorPerfil("$abiertos", "Abiertos", Color(0xFFFFF2C4), Modifier.weight(1f), modoOscuro)
+                ContadorPerfil("$resueltos", "Resueltos", Color(0xFFDCFCE7), Modifier.weight(1f), modoOscuro)
+                ContadorPerfil("${tickets.size}", "Total", Color(0xFFCFFAFE), Modifier.weight(1f), modoOscuro)
             }
             AyudaButton(
                 texto = "Cambiar de perfil",
                 onClick = onCambiarPerfil,
                 modifier = Modifier.fillMaxWidth(),
+                containerColor = Color(0xFF0891B2),
+                contentColor = Color.White,
                 shape = RoundedCornerShape(14.dp),
                 contenido = {
                     Icon(Icons.Default.SwapHoriz, contentDescription = null)
@@ -112,7 +118,7 @@ fun PerfilScreen(
                     PreferenciaFila("Notificaciones", "Avisar cambios de estado", notificaciones, onNotificacionesChange)
                 }
             }
-            Text("Se guardan en el dispositivo con DataStore", color = Color.Gray, fontSize = 12.sp)
+            Text("Se guardan en el dispositivo con DataStore", color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 12.sp)
             Spacer(Modifier.weight(1f))
             OutlinedButton(onClick = onCerrarSesion, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(12.dp)) {
                 Text("Cerrar sesión")
@@ -122,11 +128,13 @@ fun PerfilScreen(
 }
 
 @Composable
-private fun ContadorPerfil(valor: String, etiqueta: String, fondo: Color, modifier: Modifier) {
-    Card(modifier, colors = CardDefaults.cardColors(containerColor = fondo)) {
+private fun ContadorPerfil(valor: String, etiqueta: String, fondo: Color, modifier: Modifier, modoOscuro: Boolean) {
+    val fondoFinal = if (modoOscuro) Color(0xFF1B2028) else fondo
+    val textoFinal = if (modoOscuro) Color(0xFFF3F4F6) else Color(0xFF1F2937)
+    Card(modifier, colors = CardDefaults.cardColors(containerColor = fondoFinal)) {
         Column(Modifier.fillMaxWidth().padding(vertical = 12.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(valor, fontWeight = FontWeight.Bold, fontSize = 20.sp)
-            Text(etiqueta, fontSize = 11.sp)
+            Text(valor, color = textoFinal, fontWeight = FontWeight.Bold, fontSize = 20.sp)
+            Text(etiqueta, color = textoFinal, fontSize = 11.sp)
         }
     }
 }
@@ -136,7 +144,7 @@ private fun PreferenciaFila(titulo: String, detalle: String, checked: Boolean, o
     Row(Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
         Column(Modifier.weight(1f)) {
             Text(titulo, fontWeight = FontWeight.SemiBold)
-            Text(detalle, fontSize = 11.sp, color = Color.Gray)
+            Text(detalle, fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
         Switch(checked = checked, onCheckedChange = onChange)
     }

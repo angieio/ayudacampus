@@ -52,7 +52,7 @@ fun LoginScreen(vm: SesionViewModel) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White)
+            .background(MaterialTheme.colorScheme.background)
             .padding(horizontal = 24.dp, vertical = 36.dp)
     ) {
         Text(
@@ -62,7 +62,7 @@ fun LoginScreen(vm: SesionViewModel) {
         )
         Text(
             text = "Ingresa para continuar",
-            color = Color.Gray
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
 
         Spacer(Modifier.height(24.dp))
@@ -70,7 +70,7 @@ fun LoginScreen(vm: SesionViewModel) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color(0xFFF0F2F5), RoundedCornerShape(28.dp))
+                .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(28.dp))
                 .padding(5.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -166,7 +166,7 @@ fun LoginScreen(vm: SesionViewModel) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 22.dp)
-                    .background(Color(0xFFF5F0FF), RoundedCornerShape(16.dp))
+                    .background(MaterialTheme.colorScheme.secondaryContainer, RoundedCornerShape(16.dp))
                     .padding(16.dp)
             ) {
                 Text(
@@ -176,7 +176,7 @@ fun LoginScreen(vm: SesionViewModel) {
                 )
                 Text(
                     text = "Puedes cambiar de perfil desde Ajustes para probar ambos roles.",
-                    color = Color.Gray,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     style = MaterialTheme.typography.bodySmall
                 )
             }
@@ -204,7 +204,7 @@ private fun OpcionRol(
     ) {
         Text(
             text = texto,
-            color = if (seleccionado) Color.White else Color(0xFF566071),
+            color = if (seleccionado) Color.White else MaterialTheme.colorScheme.onSurfaceVariant,
             fontWeight = if (seleccionado) FontWeight.Bold else FontWeight.Normal,
             style = MaterialTheme.typography.labelMedium
         )

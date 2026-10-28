@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
@@ -49,7 +50,7 @@ fun BandejaScreen(
             AppTopBar(titulo = "Tickets")
         },
         bottomBar = {
-            NavigationBar(containerColor = Color.White) {
+            NavigationBar(containerColor = MaterialTheme.colorScheme.surface) {
                 NavigationBarItem(
                     selected = false,
                     onClick = onPanelClick,
@@ -96,8 +97,8 @@ fun BandejaScreen(
                         onClick = { vm.seleccionarFiltro(opcion) },
                         label = { Text(opcion.etiqueta) },
                         colors = FilterChipDefaults.filterChipColors(
-                            containerColor = Color.White,
-                            labelColor = Color(0xFF6B7280),
+                            containerColor = MaterialTheme.colorScheme.surface,
+                            labelColor = MaterialTheme.colorScheme.onSurfaceVariant,
                             selectedContainerColor = MoradoBandeja,
                             selectedLabelColor = Color.White
                         )
@@ -117,7 +118,7 @@ fun BandejaScreen(
                         Text(
                             text = "No hay tickets en este filtro.",
                             modifier = Modifier.padding(top = 28.dp),
-                            color = Color(0xFF858C99)
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 }

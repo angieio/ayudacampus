@@ -315,19 +315,6 @@ private fun ResumenTicket(detalle: TicketConDetalle) {
         it.name == detalle.ticket.estado
     } ?: EstadoTicket.ABIERTO
 
-    val colorEstado = when (estado) {
-        EstadoTicket.ABIERTO -> Color(0xFFD97706)
-        EstadoTicket.EN_PROCESO -> Color(0xFF2563EB)
-        EstadoTicket.RESUELTO -> Color(0xFF16A34A)
-        EstadoTicket.CERRADO -> Color(0xFF6B7280)
-    }
-
-    val colorPrioridad = when (detalle.ticket.prioridad) {
-        "ALTA" -> Color(0xFFDC2626)
-        "MEDIA" -> Color(0xFFB45309)
-        else -> Color(0xFF6B7280)
-    }
-
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(18.dp),
@@ -345,16 +332,10 @@ private fun ResumenTicket(detalle: TicketConDetalle) {
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                EstadoChip(
-                    estado = estado.name,
-                    fondoPersonalizado = colorEstado.copy(alpha = 0.12f),
-                    colorTextoPersonalizado = colorEstado
-                )
+                EstadoChip(estado = estado.name)
 
                 PrioridadChip(
-                    prioridad = detalle.ticket.prioridad,
-                    fondoPersonalizado = colorPrioridad.copy(alpha = 0.12f),
-                    colorTextoPersonalizado = colorPrioridad
+                    prioridad = detalle.ticket.prioridad
                 )
             }
 
@@ -379,7 +360,7 @@ private fun ResumenTicket(detalle: TicketConDetalle) {
 private fun AvisoResuelto() {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        color = Color(0xFFDCFCE7),
+        color = MaterialTheme.colorScheme.surfaceVariant,
         shape = RoundedCornerShape(16.dp)
     ) {
         Row(
@@ -396,13 +377,13 @@ private fun AvisoResuelto() {
             Column(Modifier.padding(start = 10.dp)) {
                 Text(
                     text = "Soporte marcó este ticket como resuelto.",
-                    color = Color(0xFF166534),
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.Bold,
                     fontSize = 13.sp
                 )
                 Text(
                     text = "¿El problema se solucionó?",
-                    color = Color(0xFF166534),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontSize = 12.sp
                 )
             }

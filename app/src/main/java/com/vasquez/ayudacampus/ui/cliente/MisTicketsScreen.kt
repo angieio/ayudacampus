@@ -21,6 +21,7 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ConfirmationNumber
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -37,6 +38,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.vasquez.ayudacampus.ui.components.TicketCard
@@ -58,13 +60,14 @@ fun MisTicketsScreen(
     val filtro by vm.filtroSeleccionado.collectAsState()
     val busqueda by vm.textoBusqueda.collectAsState()
     val cantidadAbiertos by vm.cantidadAbiertos.collectAsState()
+    val modoOscuro = MaterialTheme.colorScheme.background.luminance() < 0.5f
 
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
         floatingActionButton = {
             FloatingActionButton(
                 onClick = onNuevoClick,
-                containerColor = Turquesa,
+                containerColor = Color(0xFF0891B2),
                 contentColor = Color.White
             ) {
                 Icon(Icons.Default.Add, contentDescription = "Crear ticket")
@@ -163,7 +166,13 @@ fun MisTicketsScreen(
                     FilterChip(
                         selected = filtro == opcion,
                         onClick = { vm.seleccionarFiltro(opcion) },
-                        label = { Text(opcion.etiqueta) }
+                        label = { Text(opcion.etiqueta) },
+                        colors = FilterChipDefaults.filterChipColors(
+                            containerColor = if (modoOscuro) Color(0xFF20252D) else MaterialTheme.colorScheme.surface,
+                            labelColor = if (modoOscuro) Color(0xFFD1D5DB) else MaterialTheme.colorScheme.onSurfaceVariant,
+                            selectedContainerColor = Color(0xFF087F95),
+                            selectedLabelColor = Color.White
+                        )
                     )
                 }
             }

@@ -72,13 +72,13 @@ fun TicketCard(
             Box(
                 modifier = Modifier
                     .size(42.dp)
-                    .background(Color(0xFFD9F8FA), CircleShape),
+                    .background(MaterialTheme.colorScheme.primaryContainer, CircleShape),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     imageVector = iconoCategoria(detalle.categoria.icono),
                     contentDescription = null,
-                    tint = Color(0xFF0799B4),
+                    tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.size(22.dp)
                 )
             }

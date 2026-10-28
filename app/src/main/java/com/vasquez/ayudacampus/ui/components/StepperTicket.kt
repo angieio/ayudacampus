@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,8 +38,8 @@ fun StepperTicket(estado: EstadoTicket) {
             pasos.forEachIndexed { indice, _ ->
                 val colorPunto = when {
                     indice < indiceActivo -> Color(0xFF16A34A)
-                    indice == indiceActivo -> Color(0xFF0891B2)
-                    else -> Color(0xFFD1D5DB)
+                    indice == indiceActivo -> MaterialTheme.colorScheme.primary
+                    else -> MaterialTheme.colorScheme.outlineVariant
                 }
 
                 Box(
@@ -53,7 +54,7 @@ fun StepperTicket(estado: EstadoTicket) {
                         Box(
                             modifier = Modifier
                                 .size(8.dp)
-                                .background(Color.White, CircleShape)
+                                .background(MaterialTheme.colorScheme.surface, CircleShape)
                         )
                     }
                 }
@@ -62,7 +63,7 @@ fun StepperTicket(estado: EstadoTicket) {
                     val colorLinea = if (indice < indiceActivo) {
                         Color(0xFF16A34A)
                     } else {
-                        Color(0xFFD1D5DB)
+                        MaterialTheme.colorScheme.outlineVariant
                     }
 
                     Spacer(
@@ -85,9 +86,9 @@ fun StepperTicket(estado: EstadoTicket) {
                 Text(
                     text = paso,
                     color = if (indice <= indiceActivo) {
-                        Color(0xFF374151)
+                        MaterialTheme.colorScheme.onSurface
                     } else {
-                        Color(0xFF9CA3AF)
+                        MaterialTheme.colorScheme.onSurfaceVariant
                     },
                     fontSize = 10.sp
                 )

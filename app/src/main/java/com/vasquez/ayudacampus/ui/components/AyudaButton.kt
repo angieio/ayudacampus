@@ -41,8 +41,8 @@ fun AyudaButton(
         colors = ButtonDefaults.buttonColors(
             containerColor = fondoBoton,
             contentColor = textoBoton,
-            disabledContainerColor = fondoBoton.copy(alpha = 0.38f),
-            disabledContentColor = textoBoton.copy(alpha = 0.38f)
+            disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+            disabledContentColor = MaterialTheme.colorScheme.onSurfaceVariant
         ),
         contentPadding = ButtonDefaults.ContentPadding,
         elevation = ButtonDefaults.buttonElevation(defaultElevation = 2.dp),

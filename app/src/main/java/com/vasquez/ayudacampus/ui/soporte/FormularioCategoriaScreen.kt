@@ -19,6 +19,7 @@ import androidx.compose.material.icons.filled.Wifi
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -70,6 +71,7 @@ fun FormularioCategoriaScreen(
     LaunchedEffect(vm) { vm.guardado.collect { onVolver() } }
 
     Scaffold (
+        containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             AppTopBar(
                 titulo = if (categoriaId == null) "Nueva categoría" else "Editar categoría",
@@ -101,12 +103,12 @@ fun FormularioCategoriaScreen(
                             modifier = Modifier.weight(1f).height(62.dp)
                                 .border(
                                     width = if (icono == opcion) 2.dp else 1.dp,
-                                    color = if (icono == opcion) Color(0xFF7C3AED) else Color(0xFFE5E7EB),
+                                    color = if (icono == opcion) Color(0xFF7C3AED) else MaterialTheme.colorScheme.outline,
                                     shape = RoundedCornerShape(14.dp)
                                 )
                                 .clickable { icono = opcion },
                             shape = RoundedCornerShape(14.dp),
-                            color = if (icono == opcion) Color(0xFFEDE4FF) else Color.White
+                            color = if (icono == opcion) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surface
                         ) {
                             androidx.compose.foundation.layout.Box(contentAlignment = Alignment.Center) {
                                 Icon(iconoCategoria(opcion), contentDescription = opcion)
@@ -153,6 +155,8 @@ fun FormularioCategoriaScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 18.dp),
+                containerColor = Color(0xFF7C3AED),
+                contentColor = Color.White,
                 shape = RoundedCornerShape(12.dp)
             )
             OutlinedButton(onClick = onVolver, modifier = Modifier.fillMaxWidth().padding(top = 8.dp)) {

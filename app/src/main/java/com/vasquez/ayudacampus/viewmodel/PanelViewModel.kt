@@ -5,9 +5,12 @@ import androidx.lifecycle.viewModelScope
 import com.vasquez.ayudacampus.data.repository.AyudaRepository
 import com.vasquez.ayudacampus.model.DatoGrafico
 import com.vasquez.ayudacampus.model.EstadoTicket
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
@@ -65,9 +68,14 @@ class PanelViewModel(
             }
             .stateIn(viewModelScope, inicioCompartido, emptyList())
 
-    private val limiteUnaHora = System.currentTimeMillis() - 60 * 60 * 1000L
-
     val altasSinAtender: StateFlow<Int> =
-        repo.observarAltasSinAtender(limiteUnaHora)
-            .stateIn(viewModelScope, inicioCompartido, 0)
+        flow {
+            while (true) {
+                val limite = System.currentTimeMillis() - 60 * 60 * 1000L
+                val cantidad = repo.observarAltasSinAtender(limite).first()
+
+                emit(cantidad)
+                delay(60_000)
+            }
+        }.stateIn(viewModelScope, inicioCompartido, 0)
 }

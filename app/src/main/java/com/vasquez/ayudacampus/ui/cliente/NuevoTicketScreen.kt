@@ -130,13 +130,13 @@ fun NuevoTicketScreen(
             if (!mesaAbierta) {
                 Surface(
                     modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
-                    color = Color(0xFFFEE2E2),
+                    color = MaterialTheme.colorScheme.errorContainer,
                     shape = RoundedCornerShape(12.dp)
                 ) {
                     Text(
                         "Mesa de ayuda cerrada. No se pueden crear tickets por ahora.",
                         modifier = Modifier.padding(12.dp),
-                        color = Color(0xFFB91C1C)
+                        color = MaterialTheme.colorScheme.onErrorContainer
                     )
                 }
             }
@@ -174,7 +174,7 @@ fun NuevoTicketScreen(
             if (categorias.isEmpty()) {
                 Text(
                     text = "No hay categorías activas",
-                    color = Color.Gray,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     style = MaterialTheme.typography.bodySmall
                 )
             }

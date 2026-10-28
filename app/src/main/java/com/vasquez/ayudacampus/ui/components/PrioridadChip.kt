@@ -2,11 +2,13 @@ package com.vasquez.ayudacampus.ui.components
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -27,8 +29,25 @@ fun PrioridadChip(
         else -> Triple(prioridad, Color(0xFFF0F1F3), Color(0xFF6B7280))
     }
 
-    val colorFondo = fondoPersonalizado ?: fondo
-    val colorContenido = colorTextoPersonalizado ?: colorTexto
+    val modoOscuro = MaterialTheme.colorScheme.background.luminance() < 0.5f
+    val colorFondo = fondoPersonalizado ?: if (modoOscuro) {
+        when (prioridadNormalizada) {
+            "ALTA" -> Color(0xFF3A1F24)
+            "MEDIA" -> Color(0xFF3A2D18)
+            else -> Color(0xFF2B3038)
+        }
+    } else {
+        fondo
+    }
+    val colorContenido = colorTextoPersonalizado ?: if (modoOscuro) {
+        when (prioridadNormalizada) {
+            "ALTA" -> Color(0xFFF87171)
+            "MEDIA" -> Color(0xFFFBBF24)
+            else -> Color(0xFFD1D5DB)
+        }
+    } else {
+        colorTexto
+    }
 
     Surface(
         modifier = modifier,
