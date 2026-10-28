@@ -42,8 +42,12 @@ private val ColorSoporte = Color(0xFF7838E8)
 @Composable
 fun LoginScreen(vm: SesionViewModel) {
     var rolSeleccionado by remember { mutableStateOf(Rol.CLIENTE) }
-    var correo by remember { mutableStateOf("juan@campus.test") }
-    var clave by remember { mutableStateOf("1234") }
+    //user
+    //correo: juan@campus.test - contra: 1234
+    //soporte
+    //correo: soporte@campus.test - contra: admin
+    var correo by remember { mutableStateOf("") }
+    var clave by remember { mutableStateOf("") }
 
     val error by vm.error.collectAsState()
     val colorRol =
@@ -81,8 +85,6 @@ fun LoginScreen(vm: SesionViewModel) {
                 modifier = Modifier.weight(1f)
             ) {
                 rolSeleccionado = Rol.CLIENTE
-                correo = "juan@campus.test"
-                clave = "1234"
             }
 
             OpcionRol(
@@ -92,8 +94,6 @@ fun LoginScreen(vm: SesionViewModel) {
                 modifier = Modifier.weight(1f)
             ) {
                 rolSeleccionado = Rol.ADMIN
-                correo = "soporte@campus.test"
-                clave = "admin"
             }
         }
 
@@ -128,15 +128,6 @@ fun LoginScreen(vm: SesionViewModel) {
             )
         }
 
-        Text(
-            text = "¿Olvidaste tu contraseña?",
-            color = colorRol,
-            fontWeight = FontWeight.SemiBold,
-            textAlign = TextAlign.End,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 10.dp)
-        )
 
         Spacer(Modifier.height(24.dp))
 
@@ -150,37 +141,6 @@ fun LoginScreen(vm: SesionViewModel) {
             contentColor = Color.White,
             shape = RoundedCornerShape(14.dp)
         )
-
-        if (rolSeleccionado == Rol.CLIENTE) {
-            Text(
-                text = "¿No tienes cuenta?  Regístrate",
-                color = ColorEstudiante,
-                fontWeight = FontWeight.SemiBold,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 22.dp)
-            )
-        } else {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 22.dp)
-                    .background(MaterialTheme.colorScheme.secondaryContainer, RoundedCornerShape(16.dp))
-                    .padding(16.dp)
-            ) {
-                Text(
-                    text = "Modo práctico",
-                    color = ColorSoporte,
-                    fontWeight = FontWeight.Bold
-                )
-                Text(
-                    text = "Puedes cambiar de perfil desde Ajustes para probar ambos roles.",
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    style = MaterialTheme.typography.bodySmall
-                )
-            }
-        }
     }
 }
 
