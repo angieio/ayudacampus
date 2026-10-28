@@ -28,6 +28,8 @@ import com.vasquez.ayudacampus.ui.soporte.FormularioCategoriaScreen
 import com.vasquez.ayudacampus.ui.soporte.PanelScreen
 import com.vasquez.ayudacampus.ui.soporte.AjustesScreen
 import com.vasquez.ayudacampus.ui.cliente.PerfilScreen
+import com.vasquez.ayudacampus.ui.cliente.RegisterScreen
+import com.vasquez.ayudacampus.ui.cliente.ForgotPassScreen
 import com.vasquez.ayudacampus.viewmodel.AyudaViewModelFactory
 import com.vasquez.ayudacampus.viewmodel.BandejaViewModel
 import com.vasquez.ayudacampus.viewmodel.AtenderViewModel
@@ -36,6 +38,8 @@ import com.vasquez.ayudacampus.viewmodel.MisTicketsViewModel
 import com.vasquez.ayudacampus.viewmodel.NuevoTicketViewModel
 import com.vasquez.ayudacampus.viewmodel.PanelViewModel
 import com.vasquez.ayudacampus.viewmodel.SesionViewModel
+import com.vasquez.ayudacampus.viewmodel.RegisterViewModel
+import com.vasquez.ayudacampus.viewmodel.ForgotViewModel
 import com.vasquez.ayudacampus.viewmodel.TicketDetalleViewModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -132,7 +136,37 @@ fun NavAyuda(preferencias: PreferenciasStore) {
         }
 
         composable(Rutas.LOGIN) {
-            LoginScreen(vm)
+            LoginScreen(
+                vm = vm,
+                onRegistrarseClick = { navController.navigate(Rutas.REGISTER) },
+                onForgotClick = { navController.navigate(Rutas.FORGOT_PASS) }
+            )
+        }
+
+        composable(Rutas.REGISTER) {
+            val registerVm: RegisterViewModel = viewModel(factory = factory)
+            RegisterScreen(
+                vm = registerVm,
+                onVolver = { navController.popBackStack() },
+                onRegistrado = {
+                    navController.navigate(Rutas.MIS_TICKETS) {
+                        popUpTo(Rutas.LOGIN) { inclusive = true }
+                    }
+                }
+            )
+        }
+
+        composable(Rutas.FORGOT_PASS) {
+            val forgotVm: ForgotViewModel = viewModel(factory = factory)
+            ForgotPassScreen(
+                vm = forgotVm,
+                onVolver = { navController.popBackStack() },
+                onActualizado = {
+                    navController.navigate(Rutas.MIS_TICKETS) {
+                        popUpTo(Rutas.LOGIN) { inclusive = true }
+                    }
+                }
+            )
         }
 
         composable(Rutas.MIS_TICKETS) {
@@ -266,6 +300,7 @@ fun NavAyuda(preferencias: PreferenciasStore) {
                     notificaciones = notificaciones,
                     onModoOscuroChange = { valor -> scope.launch { preferencias.guardarModoOscuro(valor) } },
                     onNotificacionesChange = { valor -> scope.launch { preferencias.guardarNotificaciones(valor) } },
+                    onActualizarNombre = { nuevoNombre -> vm.actualizarNombre(nuevoNombre) },
                     onCambiarPerfil = { cambiarPerfil(Rol.ADMIN) },
                     onCerrarSesion = cerrarSesion,
                     onTicketsClick = { navController.navigate(Rutas.MIS_TICKETS) },

@@ -71,4 +71,16 @@ class SesionViewModel(
             }
         }
     }
+
+    fun actualizarNombre(nuevoNombre: String) {
+        val actual = _usuarioActual.value ?: return
+        val nombreLimpio = nuevoNombre.trim()
+        if (nombreLimpio.isEmpty()) return
+
+        viewModelScope.launch {
+            val actualizado = actual.copy(nombre = nombreLimpio)
+            repo.actualizarUsuario(actualizado)
+            _usuarioActual.value = actualizado
+        }
+    }
 }

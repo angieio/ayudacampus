@@ -55,6 +55,14 @@ class AyudaViewModelFactory(
             return CategoriasViewModel(repo) as T
         }
 
+        if (modelClass.isAssignableFrom(RegisterViewModel::class.java)) {
+            return RegisterViewModel(repo, preferencias) as T
+        }
+
+        if (modelClass.isAssignableFrom(ForgotViewModel::class.java)) {
+            return ForgotViewModel(repo, preferencias) as T
+        }
+
         throw IllegalArgumentException("ViewModel desconocido o faltan sus datos")
     }
 }

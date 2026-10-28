@@ -22,4 +22,13 @@ interface UsuarioDao {
 
     @Query("SELECT * FROM usuarios WHERE rol = :rol ORDER BY id LIMIT 1")
     suspend fun obtenerPorRol(rol: String): Usuario?
+
+    @Query("SELECT * FROM usuarios WHERE correo = :correo LIMIT 1")
+    suspend fun obtenerPorCorreo(correo: String): Usuario?
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertar(usuario: Usuario): Long
+
+    @androidx.room.Update
+    suspend fun actualizar(usuario: Usuario)
 }

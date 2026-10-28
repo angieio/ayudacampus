@@ -72,4 +72,13 @@ class TicketDetalleViewModel(
             repo.reabrir(ticketId)
         }
     }
+
+    fun cancelarTicket() {
+        val detalle = _ticket.value ?: return
+        if (detalle.ticket.estado != EstadoTicket.ABIERTO.name) return
+
+        viewModelScope.launch {
+            repo.cancelarTicket(ticketId)
+        }
+    }
 }

@@ -33,6 +33,9 @@ interface TicketDao {
     @Query("UPDATE tickets SET estado = 'ABIERTO', calificacion = NULL, fechaCierre = NULL WHERE id = :id")
     suspend fun reabrir(id: Int)
 
+    @Query("UPDATE tickets SET estado = 'CERRADO', fechaCierre = :fechaCierre WHERE id = :id")
+    suspend fun cancelar(id: Int, fechaCierre: Long)
+
     @Query("SELECT COUNT(*) FROM tickets WHERE categoriaId = :categoriaId")
     suspend fun contarPorCategoriaId(categoriaId: Int): Int
 

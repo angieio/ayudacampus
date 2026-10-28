@@ -52,6 +52,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.vasquez.ayudacampus.data.local.entity.Categoria
 import com.vasquez.ayudacampus.model.Prioridad
 import com.vasquez.ayudacampus.ui.components.AyudaButton
@@ -227,6 +228,28 @@ fun NuevoTicketScreen(
             )
 
             Spacer(Modifier.height(10.dp))
+
+            Text("Ubicación frecuente", fontWeight = FontWeight.Bold, fontSize = 13.sp)
+            Spacer(Modifier.height(4.dp))
+            val ubicacionesComunes = listOf("Lab Cómputo 1", "Lab Cómputo 2", "Pabellón A", "Pabellón B", "Biblioteca", "Cafetería")
+            FlowRow(
+                horizontalArrangement = Arrangement.spacedBy(6.dp),
+                verticalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                ubicacionesComunes.forEach { lugar ->
+                    FilterChip(
+                        selected = ubicacion == lugar,
+                        onClick = { vm.cambiarUbicacion(lugar) },
+                        label = { Text(lugar) },
+                        colors = FilterChipDefaults.filterChipColors(
+                            selectedContainerColor = TurquesaTicket,
+                            selectedLabelColor = Color.White
+                        )
+                    )
+                }
+            }
+
+            Spacer(Modifier.height(6.dp))
 
             OutlinedTextField(
                 value = ubicacion,

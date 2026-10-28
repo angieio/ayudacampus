@@ -39,7 +39,11 @@ private val ColorEstudiante = Color(0xFF0799B4)
 private val ColorSoporte = Color(0xFF7838E8)
 
 @Composable
-fun LoginScreen(vm: SesionViewModel) {
+fun LoginScreen(
+    vm: SesionViewModel,
+    onRegistrarseClick: () -> Unit = {},
+    onForgotClick: () -> Unit = {}
+) {
     var rolSeleccionado by remember { mutableStateOf(Rol.CLIENTE) }
     var correo by remember { mutableStateOf("juan@campus.test") }
     var clave by remember { mutableStateOf("1234") }
@@ -135,6 +139,7 @@ fun LoginScreen(vm: SesionViewModel) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 10.dp)
+                .clickable(onClick = onForgotClick)
         )
 
         Spacer(Modifier.height(24.dp))
@@ -161,6 +166,7 @@ fun LoginScreen(vm: SesionViewModel) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 22.dp)
+                    .clickable(onClick = onRegistrarseClick)
             )
         } else {
             Column(

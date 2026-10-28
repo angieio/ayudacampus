@@ -195,6 +195,21 @@ fun DetalleTicketScreen(
                     item {
                         StepperTicket(estado = estado)
                     }
+
+                    item {
+                        OutlinedButton(
+                            onClick = vm::cancelarTicket,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(52.dp),
+                            shape = RoundedCornerShape(14.dp)
+                        ) {
+                            Text(
+                                text = "Cancelar ticket",
+                                color = Color(0xFFDC2626)
+                            )
+                        }
+                    }
                 }
 
                 if (esResuelto) {

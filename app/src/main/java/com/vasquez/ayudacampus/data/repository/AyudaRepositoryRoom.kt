@@ -25,6 +25,32 @@ class AyudaRepositoryRoom(private val db: AyudaDatabase) : AyudaRepository {
 
     override suspend fun obtenerUsuarioPorRol(rol: String): Usuario? = usuarioDao.obtenerPorRol(rol)
 
+    override suspend fun obtenerUsuarioPorCorreo(correo: String): Usuario? = usuarioDao.obtenerPorCorreo(correo.trim())
+
+    override suspend fun actualizarClaveUsuario(usuarioId: Int, nuevaClave: String) {
+        val user = usuarioDao.obtenerPorId(usuarioId) ?: return
+        val updated = user.copy(clave = nuevaClave)
+        usuarioDao.actualizar(updated)
+    }
+
+    override suspend fun registrarUsuario(nombre: String, correo: String, clave: String, rol: String): Long {
+        val existente = usuarioDao.obtenerPorCorreo(correo.trim())
+        if (existente != null) {
+            throw IllegalArgumentException("El correo ya está registrado.")
+        }
+        val nuevo = Usuario(
+            nombre = nombre.trim(),
+            correo = correo.trim(),
+            clave = clave,
+            rol = rol
+        )
+        return usuarioDao.insertar(nuevo)
+    }
+
+    override suspend fun actualizarUsuario(usuario: Usuario) {
+        usuarioDao.actualizar(usuario)
+    }
+
     override fun observarCategorias(): Flow<List<Categoria>> {
         return categoriaDao.observarTodas()
     }
@@ -97,6 +123,10 @@ class AyudaRepositoryRoom(private val db: AyudaDatabase) : AyudaRepository {
 
     override suspend fun reabrir(ticketId: Int) {
         ticketDao.reabrir(ticketId)
+    }
+
+    override suspend fun cancelarTicket(ticketId: Int) {
+        ticketDao.cancelar(ticketId, System.currentTimeMillis())
     }
 
     override suspend fun agregarComentario(ticketId: Int, autor: Usuario, texto: String) {
